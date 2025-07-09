@@ -29,23 +29,35 @@ const userItems = [
   {
     title: "Home",
     value: "home",
+    props: {
+      prependIcon: "mdi-home",
+    },
   },
   {
     title: "Profile",
     value: "profile",
-  },
-  {
-    title: "Training history",
-    value: "training-history",
+    props: {
+      prependIcon: "mdi-account-circle",
+    },
   },
   {
     title: "Trainings",
     value: "trainings",
+    props: {
+      prependIcon: "mdi-dumbbell",
+    },
+  },
+  {
+    title: "Training history",
+    value: "training-history",
+    props: {
+      prependIcon: "mdi-history",
+    },
   },
 ];
 
 const drawer = ref(false);
-const isAuthenticated = ref(false);
+const isAuthenticated = ref(true);
 </script>
 
 <template>
