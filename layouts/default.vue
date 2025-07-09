@@ -1,6 +1,6 @@
 <template>
-    <v-app>
-        <navigation-guest />
-        <slot />
-    </v-app>
+  <v-app>
+    <navigation-guest />
+    <slot />
+  </v-app>
 </template>
