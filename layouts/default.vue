@@ -1,6 +1,9 @@
 <template>
-    <v-app>
-        <navigation-guest />
-        <slot />
-    </v-app>
+  <v-app>
+    <navigation />
+    <v-main>
+      <slot />
+    </v-main>
+    <footnote />
+  </v-app>
 </template>
