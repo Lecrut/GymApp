@@ -7,9 +7,12 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@antfu/eslint-config": "1.0.0-beta.2",
     "@mdi/font": "^7.4.47",
     "@nuxt/content": "3.6.3",
     "@nuxt/eslint": "1.5.2",
@@ -26,12 +29,13 @@
     "eslint": "^9.0.0",
     "nuxt": "^3.17.6",
     "pinia": "^3.0.3",
-    "typescript": "^5.6.3",
+    "typescript": "^5.8.3",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "vite-plugin-vuetify": "^2.1.1",
+    "vue-tsc": "^3.0.1",
     "vuetify": "^3.9.0"
   }
 }
