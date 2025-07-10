@@ -1,4 +1,4 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { defineStore } from 'pinia'
 import { UserModel, type IUser } from '~/models/user';
@@ -60,8 +60,24 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
+    const logout = async () => {
+        loading.value = true
+        error.value = null
+        try {
+          await signOut(auth);
+          user.value = null;
+          userData.value = null
+    
+        } catch (err: any) {
+          error.value = err.message;
+          console.log(error.value)
+        } finally {
+          loading.value = false;
+        }
+      };
+
     return {
         userData, error, loading, user,
-        loginWithGoogle, fetchUserData
+        loginWithGoogle, fetchUserData, logout
     }
 })

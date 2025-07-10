@@ -73,6 +73,7 @@
       "submit": "Zarejestruj się",
       "alreadyHaveAccount": "Masz już konto?",
       "login": "Zaloguj się"
-    }
+    },
+    "logout": "Wyloguj się"
   }
 }
