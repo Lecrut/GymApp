@@ -57,12 +57,12 @@ const userItems = [
 ];
 
 const drawer = ref(false);
-const isAuthenticated = ref(true);
+const isAuthenticated = ref(false);
 </script>
 
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     <v-app-bar-title>GymApp</v-app-bar-title>
   </v-app-bar>
 
