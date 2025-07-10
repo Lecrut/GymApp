@@ -2,13 +2,17 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import { useAuthStore } from '../../stores/auth';
 
 const { t } = useI18n()
 const router = useRouter()
+const authStore = useAuthStore()
 
 const selectedDate = ref<string | null>(null)
 const dialog = ref(false)
 const currentStep = ref(1)
+
+const error = ref<string | null>(null)
 
 function formatSelectedDate(date: string | null): string {
   if (!date) return "";
@@ -36,6 +40,21 @@ const steps = [
     text: t("auth.register.stepper.step3.text"),
   },
 ];
+
+async function pushByGoogle() {
+  try {
+    await authStore.loginWithGoogle()
+    if (authStore.error) {
+      error.value = authStore.error
+      console.log(error.value)
+    }
+    else { 
+      router.push('/user')
+    }
+  } catch (err: any) {
+    error.value = err.message
+  }
+}
 </script>
 
 <template>
@@ -52,7 +71,7 @@ const steps = [
             color="primary"
             class="my-4"
             block
-            @click=""
+            @click="pushByGoogle"
             prepend-icon="mdi-google"
           >
           {{ $t('auth.register.google') }}
