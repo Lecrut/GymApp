@@ -4,6 +4,7 @@
     "header2": "with us",
     "subtitle": "Start your training journey here and now!",
     "signUp": "Sign up",
+    "signIn": "Sign in",
     "step1": {
       "label": "Step 1",
       "title": "Create account",
@@ -34,6 +35,7 @@
   },
   "auth": {
     "login": {
+      "google": "Login with Google",
       "title": "Login",
       "email": "Email",
       "password": "Password",

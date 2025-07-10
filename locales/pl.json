@@ -4,6 +4,7 @@
     "header2": "z nami",
     "subtitle": "Zacznij swoja przygode z treningiem, tutaj i teraz!",
     "signUp": "Zarejestruj się",
+    "signIn": "Zaloguj się",
     "step1": {
       "label": "Krok 1",
       "title": "Utwórz konto",
@@ -34,7 +35,8 @@
   },
   "auth": {
     "login": {
-      "title": "Logowanie",
+      "google": "Zaloguj się przez Google",
+      "title": "Chyba pora na trening!",
       "email": "Email",
       "password": "Hasło",
       "submit": "Zaloguj się",

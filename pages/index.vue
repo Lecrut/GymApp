@@ -48,6 +48,7 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9]);
             {{ $t("landingPage.subtitle") }}
           </p>
           <v-btn @click="router.push('auth/register')">{{ $t("landingPage.signUp") }}</v-btn>
+          <v-btn @click="router.push('auth/login')">{{ $t("landingPage.signIn") }}</v-btn>
         </div>
       </v-col>
       <v-col class="d-flex justify-center" cols="12" md="6">
@@ -55,7 +56,7 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9]);
           class="flex-grow-0"
           height="400"
           width="400"
-          src="/images/personal-trainer.svg"
+          src="public/images/personal-trainer.svg"
         >
           <template #placeholder>
             <div class="d-flex align-center justify-center fill-height">
@@ -84,6 +85,7 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9]);
               :prepend-icon="step.icon"
               color="secondary"
             />
+            
           </template>
         </v-stepper>
       </v-col>
