@@ -32,5 +32,47 @@
     "trainingHistory": "Historia treningów",
     "logout": "Wyloguj się"
   },
-  "test": "To jest test"
+  "auth": {
+    "login": {
+      "title": "Logowanie",
+      "email": "Email",
+      "password": "Hasło",
+      "submit": "Zaloguj się",
+      "forgotPassword": "Zapomniałeś hasła?",
+      "noAccount": "Nie masz konta?",
+      "register": "Zarejestruj się"
+    },
+    "register": {
+      "register": "Zarejestruj się",
+      "stepper": {
+        "step1": {
+          "label": "Konto",
+          "title": "Stwórz konto",
+          "text": "Na początek, stwórz swoje konto na naszej stronie."
+        },
+        "step2": {
+          "label": "Dane osobowe",
+          "title": "Dane osobowe",
+          "text": "Poznajmy się lepiej! Podaj swoje dane osobowe."
+        },
+        "step3": {
+          "label": "Zakończ",
+          "title": "Zakończ",
+          "text": "Jak mamy Cię nazywać, Dziku?"
+        }
+      },
+      "google": "Zarejestruj się przez Google",
+      "nickname": "Nick",
+      "dateBirth": "Data urodzenia",
+      "title": "Rejestracja",
+      "name": "Imię",
+      "surname": "Nazwisko",
+      "email": "Email",
+      "password": "Hasło",
+      "confirmPassword": "Potwierdź hasło",
+      "submit": "Zarejestruj się",
+      "alreadyHaveAccount": "Masz już konto?",
+      "login": "Zaloguj się"
+    }
+  }
 }

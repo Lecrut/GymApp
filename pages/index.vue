@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 const { t } = useI18n();
+const router = useRouter();
 
 const steps = [
   {
@@ -45,7 +47,7 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9]);
           <p class="text-subtitle-1">
             {{ $t("landingPage.subtitle") }}
           </p>
-          <v-btn>{{ $t("landingPage.signUp") }}</v-btn>
+          <v-btn @click="router.push('auth/register')">{{ $t("landingPage.signUp") }}</v-btn>
         </div>
       </v-col>
       <v-col class="d-flex justify-center" cols="12" md="6">
