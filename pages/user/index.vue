@@ -1,9 +1,9 @@
 <template>
-    <span>
-        {{ $t('test') }}
+  <span>
+    {{ $t('test') }}
 
-        <v-card>
-            {{ $t('test') }}
-        </v-card>
-    </span>
+    <v-card>
+      {{ $t('test') }}
+    </v-card>
+  </span>
 </template>
