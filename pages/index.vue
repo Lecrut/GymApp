@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -23,10 +24,15 @@ const steps = [
     icon: "mdi-run",
   },
 ];
+
+const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9]);
 </script>
 
 <template>
-  <v-container min-width="100%" class="bg-blue-lighten-1 pt-7 pb-7">
+  <v-container
+    min-width="100%"
+    class="bg-blue-lighten-1 d-flex flex-column pt-7 pb-7 ga-10"
+  >
     <v-row>
       <v-col class="d-flex align-center justify-center" cols="12" md="6">
         <div class="d-flex flex-column ga-3">
@@ -78,6 +84,24 @@ const steps = [
             />
           </template>
         </v-stepper>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="5">
+        <v-sparkline
+          line-width="2"
+          :model-value="value"
+          smooth="smooth"
+          color="primary"
+        />
+      </v-col>
+      <v-col
+        class="d-flex flex-column justify-center font-weight-regular text-justify"
+        cols="12"
+        md="5"
+        offset-md="1"
+      >
+        {{ $t("landingPage.slogan") }}
       </v-col>
     </v-row>
   </v-container>
