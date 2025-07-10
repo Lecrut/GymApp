@@ -1,6 +1,34 @@
 {
   "landingPage": {
     "header1": "Train like a pro",
-    "header2": "with us"
+    "header2": "with us",
+    "subtitle": "Start your training journey here and now!",
+    "signUp": "Sign up",
+    "step1": {
+      "label": "Step 1",
+      "title": "Create account",
+      "text": "Sign up on our website."
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "Workout plan",
+      "text": "Choose one of many workout plans which fits you the most."
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Train",
+      "text": "Start training with choosen workout plan and achieve your goals."
+    },
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "navigation": {
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "trainings": "Trainings",
+    "trainingHistory": "Training history",
+    "logout": "Logout"
   }
 }

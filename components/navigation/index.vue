@@ -1,23 +1,26 @@
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const guestItems = [
   {
-    title: "Home",
+    title: t("navigation.home"),
     value: "home",
     props: {
       prependIcon: "mdi-home",
     },
   },
   {
-    title: "Login",
+    title: t("navigation.login"),
     value: "login",
     props: {
       prependIcon: "mdi-login",
     },
   },
   {
-    title: "Register",
+    title: t("navigation.register"),
     value: "register",
     props: {
       prependIcon: "mdi-pen",
@@ -27,37 +30,44 @@ const guestItems = [
 
 const userItems = [
   {
-    title: "Home",
+    title: t("navigation.home"),
     value: "home",
     props: {
       prependIcon: "mdi-home",
     },
   },
   {
-    title: "Profile",
+    title: t("navigation.profile"),
     value: "profile",
     props: {
       prependIcon: "mdi-account-circle",
     },
   },
   {
-    title: "Trainings",
+    title: t("navigation.trainings"),
     value: "trainings",
     props: {
       prependIcon: "mdi-dumbbell",
     },
   },
   {
-    title: "Training history",
+    title: t("navigation.trainingHistory"),
     value: "training-history",
     props: {
       prependIcon: "mdi-history",
     },
   },
+  {
+    title: t("navigation.logout"),
+    value: "logout",
+    props: {
+      prependIcon: "mdi-logout",
+    },
+  },
 ];
 
 const drawer = ref(false);
-const isAuthenticated = ref(false);
+const isAuthenticated = ref(true);
 </script>
 
 <template>

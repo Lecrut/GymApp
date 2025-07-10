@@ -1,7 +1,35 @@
 {
   "landingPage": {
     "header1": "Trenuj jak pro",
-    "header2": "z nami"
+    "header2": "z nami",
+    "subtitle": "Zacznij swoja przygode z treningiem, tutaj i teraz!",
+    "signUp": "Zarejestruj się",
+    "step1": {
+      "label": "Krok 1",
+      "title": "Utwórz konto",
+      "text": "Zarejestruj się na naszej stronie."
+    },
+    "step2": {
+      "label": "Krok 2",
+      "title": "Plan treningowy",
+      "text": "Wybierz jeden z wielu planów treningowych, który najbardziej Ci odpowiada."
+    },
+    "step3": {
+      "label": "Krok 3",
+      "title": "Trenuj",
+      "text": "Rozpocznij trening z wybranym planem treningowym i osiągnij swoje cele."
+    },
+    "next": "Dalej",
+    "previous": "Wstecz"
+  },
+  "navigation": {
+    "home": "Strona główna",
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "profile": "Profil",
+    "trainings": "Treningi",
+    "trainingHistory": "Historia treningów",
+    "logout": "Wyloguj się"
   },
   "test": "To jest test"
 }

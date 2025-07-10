@@ -1,21 +1,25 @@
 <script setup>
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
 const steps = [
   {
-    label: "Step 1",
-    title: "Create account",
-    text: "Sign up on our website.",
+    label: t("landingPage.step1.label"),
+    title: t("landingPage.step1.title"),
+    text: t("landingPage.step1.text"),
     icon: "mdi-account-plus",
   },
   {
-    label: "Step 2",
-    title: "Workout plan",
-    text: "Choose one of many workout plans which fits you the most.",
+    label: t("landingPage.step2.label"),
+    title: t("landingPage.step2.title"),
+    text: t("landingPage.step2.text"),
     icon: "mdi-dumbbell",
   },
   {
-    label: "Step 3",
-    title: "Train",
-    text: "Start training with choosen workout plan and achieve your goals.",
+    label: t("landingPage.step3.label"),
+    title: t("landingPage.step3.title"),
+    text: t("landingPage.step3.text"),
     icon: "mdi-run",
   },
 ];
@@ -33,9 +37,9 @@ const steps = [
             {{ $t("landingPage.header2") }}
           </h3>
           <p class="text-subtitle-1">
-            Start your fitness journey right now, right here
+            {{ $t("landingPage.subtitle") }}
           </p>
-          <v-btn>Sign up</v-btn>
+          <v-btn>{{ $t("landingPage.signUp") }}</v-btn>
         </div>
       </v-col>
       <v-col class="d-flex justify-center" cols="12" md="6">
@@ -55,7 +59,12 @@ const steps = [
     </v-row>
     <v-row justify="center">
       <v-col cols="12" md="6">
-        <v-stepper :items="steps.map((s) => s.label)" bg-color="secondary">
+        <v-stepper
+          :items="steps.map((s) => s.label)"
+          bg-color="secondary"
+          :prev-text="$t('landingPage.previous')"
+          :next-text="$t('landingPage.next')"
+        >
           <template
             v-for="(step, idx) in steps"
             :key="step.label"
