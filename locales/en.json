@@ -36,7 +36,7 @@
   "auth": {
     "login": {
       "google": "Login with Google",
-      "title": "Login",
+      "title": "What's on the plan today, champ?",
       "email": "Email",
       "password": "Password",
       "submit": "Login",
