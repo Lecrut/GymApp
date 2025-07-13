@@ -2,6 +2,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
+import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = getAuth()
@@ -63,6 +64,55 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const checkEmailAvailability = async (email: string, password: string): Promise<boolean> => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email)
+      if (signInMethods.length === 0) {
+        error.value = 'Brak konta powiązanego z tym emailem.'
+        loading.value = false
+        return true
+      }
+
+      error.value = 'Email jest już używany.'
+      loading.value = false
+      return false
+    } catch (err: any) {
+      error.value = err.message
+      console.log(err)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const registerByPassword = async (userDataInput: IUser, password: string): Promise<boolean> => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, userDataInput.email, password)
+      const user = userCredential.user
+
+      const userRef = doc(db, 'users', user.uid)
+      await setDoc(userRef, {
+        ...userDataInput,
+        created: new Date(),
+      })
+
+      await fetchUserData(user.uid)
+      return true
+    } catch (err: any) {
+      error.value = err.message
+      console.log(err)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   const logout = async () => {
     loading.value = true
     error.value = null
@@ -87,6 +137,8 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     loginWithGoogle,
     fetchUserData,
+    registerByPassword,
+    checkEmailAvailability,
     logout,
   }
 })

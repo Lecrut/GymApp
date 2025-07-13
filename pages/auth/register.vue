@@ -3,10 +3,22 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import { Timestamp } from 'firebase/firestore'
+import { UserModel, type IUser } from '~/models/user'
 
 const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const userEmail = ref('')
+const userPassword = ref('')
+const userConfirmPassword = ref('')
+const userName = ref('')
+const userSurname = ref('')
+const userNickname = ref('')
+const userDateBirth = computed(() => {
+  return selectedDate.value ? Timestamp.fromDate(new Date(selectedDate.value)) : null
+})
 
 const selectedDate = ref<string | null>(null)
 const dialog = ref(false)
@@ -22,6 +34,11 @@ function formatSelectedDate(date: string | null): string {
   const month = String(d.getMonth() + 1).padStart(2, '0')
   const year = d.getFullYear()
   return `${day}-${month}-${year}`
+}
+
+function checkPasswordsMatch(): boolean {
+  console.log('Checking passwords match:', userPassword.value, userConfirmPassword.value)
+  return userPassword.value === userConfirmPassword.value
 }
 
 const steps = computed(() => [
@@ -54,6 +71,56 @@ async function pushByGoogle() {
     }
   }
   catch (err: any) {
+    error.value = err.message
+  }
+}
+
+async function checkEmail(userEmail: string, userPassword: string) {
+  try {
+    if (!checkPasswordsMatch()) {
+      console.log('Passwords do not match')
+      error.value = 'Passwords do not match'
+      return
+    }
+    const isSuccess = await authStore.checkEmailAvailability(userEmail, userPassword)
+    console.log('Email availability check result:', isSuccess)
+    if (isSuccess) {
+      console.log('Email is available')
+      currentStep.value++
+      error.value = null
+    } else {
+      error.value = authStore.error || 'Email in use'
+    }
+  } catch (err: any) {
+    error.value = err.message
+  }
+}
+
+async function handleRegistrationByPassword() {
+  try {
+    if (!checkPasswordsMatch()) {
+      console.log('Passwords do not match')
+      error.value = 'Passwords do not match'
+      return
+    }
+    const newUser: IUser = {
+      email: userEmail.value,
+      name: userName.value,
+      surname: userSurname.value,
+      nick: userNickname.value,
+      dateOfBirth: new Date(selectedDate.value || ''),
+      photo: '',
+      role: 'user',
+      created: new Date(),
+    }
+    await authStore.registerByPassword(newUser, userPassword.value)
+    if (authStore.error) {
+      error.value = authStore.error
+      console.log(error.value)
+    } else {
+      router.push('/user')
+    }
+  } catch (err: any) {
     error.value = err.message
   }
 }
@@ -95,18 +162,21 @@ async function pushByGoogle() {
                 <v-form class="mx-auto" style="max-width: 400px; width: 100%;">
                   <v-text-field
                     :label="$t('auth.register.email')"
+                    v-model="userEmail"
                     type="email"
                     required
                     prepend-inner-icon="mdi-email"
                   />
                   <v-text-field
                     :label="$t('auth.register.password')"
+                    v-model="userPassword"
                     type="password"
                     required
                     prepend-inner-icon="mdi-lock"
                   />
                   <v-text-field
                     :label="$t('auth.register.confirmPassword')"
+                    v-model="userConfirmPassword"
                     type="password"
                     required
                     prepend-inner-icon="mdi-lock"
@@ -115,7 +185,7 @@ async function pushByGoogle() {
                     color="primary"
                     class="mt-4"
                     block
-                    @click="currentStep++"
+                    @click="checkEmail(userEmail, userPassword)"
                   >
                     {{ $t('landingPage.next') }}
                   </v-btn>
@@ -131,12 +201,14 @@ async function pushByGoogle() {
                 <v-form class="mx-auto" style="max-width: 400px; width: 100%;">
                   <v-text-field
                     :label="$t('auth.register.name')"
+                    v-model="userName"
                     type="text"
                     required
                     prepend-inner-icon="mdi-account-outline"
                   />
                   <v-text-field
                     :label="$t('auth.register.surname')"
+                    v-model="userSurname"
                     type="text"
                     required
                     prepend-inner-icon="mdi-account-outline"
@@ -175,6 +247,7 @@ async function pushByGoogle() {
                 <v-form class="mx-auto" style="max-width: 400px; width: 100%;">
                   <v-text-field
                     :label="$t('auth.register.nickname')"
+                    v-model="userNickname"
                     type="text"
                     required
                     prepend-inner-icon="mdi-weight-lifter"
@@ -183,7 +256,7 @@ async function pushByGoogle() {
                     color="primary"
                     class="mt-4"
                     block
-                    @click=""
+                    @click="handleRegistrationByPassword()"
                   >
                     {{ $t('auth.register.register') }}
                   </v-btn>
