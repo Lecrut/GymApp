@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -24,7 +24,7 @@ function formatSelectedDate(date: string | null): string {
   return `${day}-${month}-${year}`
 }
 
-const steps = [
+const steps = computed(() => [
   {
     label: t('auth.register.stepper.step1.label'),
     title: t('auth.register.stepper.step1.title'),
@@ -40,7 +40,7 @@ const steps = [
     title: t('auth.register.stepper.step3.title'),
     text: t('auth.register.stepper.step3.text'),
   },
-]
+])
 
 async function pushByGoogle() {
   try {
@@ -210,7 +210,3 @@ async function pushByGoogle() {
     </v-row>
   </v-container>
 </template>
-
-<style>
-
-</style>
