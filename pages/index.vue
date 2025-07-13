@@ -1,31 +1,31 @@
-<script setup>
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const steps = [
   {
-    label: t("landingPage.step1.label"),
-    title: t("landingPage.step1.title"),
-    text: t("landingPage.step1.text"),
-    icon: "mdi-account-plus",
+    label: t('landingPage.step1.label'),
+    title: t('landingPage.step1.title'),
+    text: t('landingPage.step1.text'),
+    icon: 'mdi-account-plus',
   },
   {
-    label: t("landingPage.step2.label"),
-    title: t("landingPage.step2.title"),
-    text: t("landingPage.step2.text"),
-    icon: "mdi-dumbbell",
+    label: t('landingPage.step2.label'),
+    title: t('landingPage.step2.title'),
+    text: t('landingPage.step2.text'),
+    icon: 'mdi-dumbbell',
   },
   {
-    label: t("landingPage.step3.label"),
-    title: t("landingPage.step3.title"),
-    text: t("landingPage.step3.text"),
-    icon: "mdi-run",
+    label: t('landingPage.step3.label'),
+    title: t('landingPage.step3.title'),
+    text: t('landingPage.step3.text'),
+    icon: 'mdi-run',
   },
-];
+]
 
-const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9]);
+const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
 </script>
 
 <template>
