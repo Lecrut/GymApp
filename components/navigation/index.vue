@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const guestItems = [
+const guestItems = computed(() => [
   {
     title: t('navigation.home'),
     value: 'home',
@@ -26,9 +26,9 @@ const guestItems = [
       prependIcon: 'mdi-pen',
     },
   },
-]
+])
 
-const userItems = [
+const userItems = computed(() => [
   {
     title: t('navigation.home'),
     value: 'home',
@@ -64,7 +64,7 @@ const userItems = [
       prependIcon: 'mdi-logout',
     },
   },
-]
+])
 
 const drawer = ref(false)
 const isAuthenticated = ref(true)
