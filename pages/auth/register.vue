@@ -24,7 +24,7 @@ function formatSelectedDate(date: string | null): string {
   return `${day}-${month}-${year}`
 }
 
-const steps = [
+const steps = computed(() => [
   {
     label: t('auth.register.stepper.step1.label'),
     title: t('auth.register.stepper.step1.title'),
@@ -40,7 +40,7 @@ const steps = [
     title: t('auth.register.stepper.step3.title'),
     text: t('auth.register.stepper.step3.text'),
   },
-]
+])
 
 async function pushByGoogle() {
   try {

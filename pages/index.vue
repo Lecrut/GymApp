@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 const { t } = useI18n()
 const router = useRouter()
 
-const steps = [
+const steps = computed(() => [
   {
     label: t('landingPage.step1.label'),
     title: t('landingPage.step1.title'),
@@ -25,7 +25,7 @@ const steps = [
     text: t('landingPage.step3.text'),
     icon: 'mdi-run',
   },
-]
+])
 
 const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
 </script>
