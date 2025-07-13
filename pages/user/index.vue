@@ -1,20 +1,19 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { useAuthStore } from '../../stores/auth';
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../../stores/auth'
 
-const router = useRouter();
+const router = useRouter()
 const authStore = useAuthStore()
 const userData = ref<typeof authStore.userData | null>(null)
 const loading = ref(true)
 
 async function handleLogout() {
   await authStore.logout()
-  if (authStore.error) {
-    console.error("Logout error:", authStore.error)
-  } else {
+  if (authStore.error)
+    console.error('Logout error:', authStore.error)
+  else
     router.push('/')
-  }
 }
 
 onMounted(async () => {
@@ -38,5 +37,4 @@ onMounted(async () => {
     <v-btn @click="handleLogout">
       {{ $t('auth.logout') }} </v-btn>
   </span>
-
 </template>

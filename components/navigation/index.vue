@@ -1,73 +1,73 @@
 <script setup>
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const guestItems = [
   {
-    title: t("navigation.home"),
-    value: "home",
+    title: t('navigation.home'),
+    value: 'home',
     props: {
-      prependIcon: "mdi-home",
+      prependIcon: 'mdi-home',
     },
   },
   {
-    title: t("navigation.login"),
-    value: "login",
+    title: t('navigation.login'),
+    value: 'login',
     props: {
-      prependIcon: "mdi-login",
+      prependIcon: 'mdi-login',
     },
   },
   {
-    title: t("navigation.register"),
-    value: "register",
+    title: t('navigation.register'),
+    value: 'register',
     props: {
-      prependIcon: "mdi-pen",
+      prependIcon: 'mdi-pen',
     },
   },
-];
+]
 
 const userItems = [
   {
-    title: t("navigation.home"),
-    value: "home",
+    title: t('navigation.home'),
+    value: 'home',
     props: {
-      prependIcon: "mdi-home",
+      prependIcon: 'mdi-home',
     },
   },
   {
-    title: t("navigation.profile"),
-    value: "profile",
+    title: t('navigation.profile'),
+    value: 'profile',
     props: {
-      prependIcon: "mdi-account-circle",
+      prependIcon: 'mdi-account-circle',
     },
   },
   {
-    title: t("navigation.trainings"),
-    value: "trainings",
+    title: t('navigation.trainings'),
+    value: 'trainings',
     props: {
-      prependIcon: "mdi-dumbbell",
+      prependIcon: 'mdi-dumbbell',
     },
   },
   {
-    title: t("navigation.trainingHistory"),
-    value: "training-history",
+    title: t('navigation.trainingHistory'),
+    value: 'training-history',
     props: {
-      prependIcon: "mdi-history",
+      prependIcon: 'mdi-history',
     },
   },
   {
-    title: t("navigation.logout"),
-    value: "logout",
+    title: t('navigation.logout'),
+    value: 'logout',
     props: {
-      prependIcon: "mdi-logout",
+      prependIcon: 'mdi-logout',
     },
   },
-];
+]
 
-const drawer = ref(false);
-const isAuthenticated = ref(true);
+const drawer = ref(false)
+const isAuthenticated = ref(true)
 </script>
 
 <template>
