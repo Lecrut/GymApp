@@ -2,7 +2,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
-import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth'
+import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword } from 'firebase/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = getAuth()
@@ -113,6 +113,24 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const loginWithEmail = async (email: string, password: string): Promise<boolean> => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      user.value = userCredential.user
+      await fetchUserData(userCredential.user.uid)
+      return true
+    } catch (err: any) {
+      error.value = err.message
+      console.log(err)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   const logout = async () => {
     loading.value = true
     error.value = null
@@ -139,6 +157,7 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserData,
     registerByPassword,
     checkEmailAvailability,
+    loginWithEmail,
     logout,
   }
 })

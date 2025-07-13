@@ -8,6 +8,9 @@ const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 
+const userEmail = ref('')
+const userPassword = ref('')
+
 const error = ref<string | null>(null)
 
 async function pushByGoogle() {
@@ -22,6 +25,20 @@ async function pushByGoogle() {
     }
   }
   catch (err: any) {
+    error.value = err.message
+  }
+}
+
+async function handleLoginByPassword() {
+  try {
+    await authStore.loginWithEmail(userEmail.value, userPassword.value)
+    if (authStore.error) {
+      error.value = authStore.error
+      console.log(error.value)
+    } else {
+      router.push('/user')
+    }
+  } catch (err: any) {
     error.value = err.message
   }
 }
@@ -51,19 +68,18 @@ async function pushByGoogle() {
 
           <v-divider :thickness="4" class="border-opacity-75 py-1" color="primary" />
 
-          <!-- <v-card-title class="text-center mb-4">
-            {{ $t('navigation.login').toUpperCase() }}
-          </v-card-title> -->
           <v-form class="mx-auto my-5" style="max-width: 500px; width: 100%;">
             <v-text-field
               :label="$t('auth.register.email')"
               type="email"
+              v-model="userEmail"
               required
               prepend-inner-icon="mdi-email"
             />
             <v-text-field
               :label="$t('auth.register.password')"
               type="password"
+              v-model="userPassword"
               required
               prepend-inner-icon="mdi-lock"
             />
@@ -72,7 +88,7 @@ async function pushByGoogle() {
               color="primary"
               class="mt-4"
               block
-              @click="pushByGoogle"
+              @click="handleLoginByPassword"
             >
               {{ $t('navigation.login') }}
             </v-btn>
