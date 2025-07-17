@@ -33,6 +33,16 @@
     "trainingHistory": "Training history",
     "logout": "Logout"
   },
+  "user": {
+    "gymTraining": "Gym Training"
+  },
+  "training": {
+    "start": "Start training",
+    "startYourTraining": "Start your training",
+    "rightNow": "Now",
+    "description": "Every weight lifted is a step towards a stronger version of yourself!",
+    "letsGo": "Let's go!"
+  },
   "auth": {
     "login": {
       "google": "Login with Google",

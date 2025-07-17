@@ -33,6 +33,16 @@
     "trainingHistory": "Historia treningów",
     "logout": "Wyloguj się"
   },
+  "user": {
+    "gymTraining": "Trening na siłowni"
+  },
+  "training": {
+    "start": "Rozpocznij trening",
+    "startYourTraining": "Rozpocznij swój trening",
+    "rightNow": "Teraz",
+    "description": "Każdy podniesiony ciężar to krok w kierunku silniejszej wersji siebie!",
+    "letsGo": "Zaczynajmy!"
+  },
   "auth": {
     "login": {
       "google": "Zaloguj się przez Google",
