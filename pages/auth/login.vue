@@ -3,6 +3,10 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import { emailRule, passwordRule, requiredRule } from "~/composables/rules"
+import formValidation from "~/composables/formValidation"
+
+const { valid } = formValidation()
 
 const { t } = useI18n()
 const router = useRouter()
@@ -68,13 +72,16 @@ async function handleLoginByPassword() {
 
           <v-divider :thickness="4" class="border-opacity-75 py-1" color="primary" />
 
-          <v-form class="mx-auto my-5" style="max-width: 500px; width: 100%;">
+          <v-form class="mx-auto my-5" style="max-width: 500px; width: 100%;" 
+            @submit.prevent="handleLoginByPassword"
+            v-model="valid">
             <v-text-field
               :label="$t('auth.register.email')"
               type="email"
               v-model="userEmail"
               required
               prepend-inner-icon="mdi-email"
+              :rules="[requiredRule(), emailRule()]"
             />
             <v-text-field
               :label="$t('auth.register.password')"
@@ -82,13 +89,19 @@ async function handleLoginByPassword() {
               v-model="userPassword"
               required
               prepend-inner-icon="mdi-lock"
+              :rules="[requiredRule(), passwordRule()]"
             />
-
+            <v-alert
+              v-if="error"
+              type="error"
+              class="mt-4"
+              dismissible>
+            </v-alert>
             <v-btn
               color="primary"
               class="mt-4"
               block
-              @click="handleLoginByPassword"
+              type="submit"
             >
               {{ $t('navigation.login') }}
             </v-btn>
