@@ -5,10 +5,14 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { Timestamp } from 'firebase/firestore'
 import { UserModel, type IUser } from '~/models/user'
+import { emailRule, lengthRule, lengthRuleShort, passwordRule, requiredRule, timestampPastRule } from '~/composables/rules'
+import formValidation from '~/composables/formValidation';
 
 const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const { form, valid, isValid } = formValidation()
 
 const userEmail = ref('')
 const userPassword = ref('')
@@ -35,6 +39,12 @@ function formatSelectedDate(date: string | null): string {
   const year = d.getFullYear()
   return `${day}-${month}-${year}`
 }
+
+const allowDates = computed(() => {
+  const today = new Date()
+  const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate())
+  return maxDate.toISOString().substr(0, 10)
+})
 
 function checkPasswordsMatch(): boolean {
   console.log('Checking passwords match:', userPassword.value, userConfirmPassword.value)
@@ -75,26 +85,39 @@ async function pushByGoogle() {
   }
 }
 
-async function checkEmail(userEmail: string, userPassword: string) {
+async function checkEmail(userEmail: string) {
   try {
     if (!checkPasswordsMatch()) {
       console.log('Passwords do not match')
       error.value = 'Passwords do not match'
       return
     }
-    const isSuccess = await authStore.checkEmailAvailability(userEmail, userPassword)
-    console.log('Email availability check result:', isSuccess)
-    if (isSuccess) {
-      console.log('Email is available')
-      currentStep.value++
-      error.value = null
-    } else {
-      error.value = authStore.error || 'Email in use'
+    if (await isValid()) {
+      const isSuccess = await authStore.checkEmailAvailability(userEmail)
+      console.log('Email availability check result:', isSuccess)
+      if (isSuccess) {
+        console.log('Email is available')
+        currentStep.value++
+        error.value = null
+      } else {
+        error.value = authStore.error || 'Email in use'
+      }
     }
   } catch (err: any) {
     error.value = err.message
   }
 }
+
+async function checkNextStep() {
+  if (await isValid()) {
+    currentStep.value++
+    error.value = null
+  } else {
+    console.log('Form is not valid')
+    error.value = 'Please fill in all required fields correctly.'
+  }
+}
+
 
 async function handleRegistrationByPassword() {
   try {
@@ -103,22 +126,26 @@ async function handleRegistrationByPassword() {
       error.value = 'Passwords do not match'
       return
     }
-    const newUser: IUser = {
-      email: userEmail.value,
-      name: userName.value,
-      surname: userSurname.value,
-      nick: userNickname.value,
-      dateOfBirth: new Date(selectedDate.value || ''),
-      photo: '',
-      role: 'user',
-      created: new Date(),
-    }
-    await authStore.registerByPassword(newUser, userPassword.value)
-    if (authStore.error) {
-      error.value = authStore.error
-      console.log(error.value)
-    } else {
-      router.push('/user')
+    if (await isValid()) {
+      console.log('Form is valid, proceeding with registration')
+      const newUser: IUser = {
+        email: userEmail.value,
+        name: userName.value,
+        surname: userSurname.value,
+        nick: userNickname.value,
+        dateOfBirth: new Date(selectedDate.value || ''),
+        photo: '',
+        role: 'user',
+        created: new Date(),
+      }
+      console.log('New user data:', newUser)
+      await authStore.registerByPassword(newUser, userPassword.value)
+      if (authStore.error) {
+        error.value = authStore.error
+        console.log(error.value)
+      } else {
+        router.push('/user')
+      }
     }
   } catch (err: any) {
     error.value = err.message
@@ -159,13 +186,20 @@ async function handleRegistrationByPassword() {
                 <v-card-text class="text-center mb-4">
                   {{ steps[0].text }}
                 </v-card-text>
-                <v-form class="mx-auto" style="max-width: 400px; width: 100%;">
+                <v-form
+                  class="mx-auto"
+                  style="max-width: 400px; width: 100%;"
+                  v-model="valid"
+                  ref="form"
+                  @submit.prevent="checkEmail(userEmail)"
+                >
                   <v-text-field
                     :label="$t('auth.register.email')"
                     v-model="userEmail"
                     type="email"
                     required
                     prepend-inner-icon="mdi-email"
+                    :rules="[emailRule(), requiredRule()]"
                   />
                   <v-text-field
                     :label="$t('auth.register.password')"
@@ -173,6 +207,7 @@ async function handleRegistrationByPassword() {
                     type="password"
                     required
                     prepend-inner-icon="mdi-lock"
+                    :rules="[passwordRule(), lengthRuleShort()]"
                   />
                   <v-text-field
                     :label="$t('auth.register.confirmPassword')"
@@ -180,16 +215,25 @@ async function handleRegistrationByPassword() {
                     type="password"
                     required
                     prepend-inner-icon="mdi-lock"
+                    :rules="[passwordRule(), lengthRuleShort()]"
                   />
+                  <v-alert
+                    v-if="error"
+                    type="error"
+                    class="my-2">
+                    {{ error }}
+                  </v-alert>
                   <v-btn
                     color="primary"
                     class="mt-4"
                     block
-                    @click="checkEmail(userEmail, userPassword)"
+                    type="submit"
                   >
                     {{ $t('landingPage.next') }}
                   </v-btn>
+                  
                 </v-form>
+                
               </v-stepper-content>
             </template>
 
@@ -198,13 +242,17 @@ async function handleRegistrationByPassword() {
                 <v-card-text class="text-center mb-4">
                   {{ steps[1].text }}
                 </v-card-text>
-                <v-form class="mx-auto" style="max-width: 400px; width: 100%;">
+                <v-form class="mx-auto" style="max-width: 400px; width: 100%;" 
+                  @submit.prevent="checkNextStep()"
+                  v-model="valid"
+                  ref="form">
                   <v-text-field
                     :label="$t('auth.register.name')"
                     v-model="userName"
                     type="text"
                     required
                     prepend-inner-icon="mdi-account-outline"
+                    :rules="[lengthRuleShort(), lengthRule(), requiredRule()]"
                   />
                   <v-text-field
                     :label="$t('auth.register.surname')"
@@ -212,6 +260,7 @@ async function handleRegistrationByPassword() {
                     type="text"
                     required
                     prepend-inner-icon="mdi-account-outline"
+                    :rules="[lengthRuleShort(), lengthRule(), requiredRule()]"
                   />
                   <v-text-field
                     :model-value="formatSelectedDate(selectedDate)"
@@ -220,19 +269,28 @@ async function handleRegistrationByPassword() {
                     prepend-inner-icon="mdi-calendar"
                     readonly
                     @click="dialog = true"
+                    :rules="[requiredRule(), timestampPastRule()]"
                   />
                   <v-dialog v-model="dialog" width="290">
                     <v-date-picker
                       v-model="selectedDate"
+                      :max="allowDates"
                       @update:model-value="dialog = false"
                     />
                   </v-dialog>
+                  <v-alert
+                    v-if="error"
+                    type="error"
+                    class="my-2">
+                    {{ error }} </v-alert>
+
                   <v-btn
                     color="primary"
                     class="mt-4"
                     block
-                    @click="currentStep++"
+                    type="submit"
                   >
+                  <!-- @click="currentStep++" -->
                     {{ $t('landingPage.next') }}
                   </v-btn>
                 </v-form>
@@ -244,20 +302,29 @@ async function handleRegistrationByPassword() {
                 <v-card-title class="text-h5 mb-4 text-center ">
                   {{ steps[2].text }}
                 </v-card-title>
-                <v-form class="mx-auto" style="max-width: 400px; width: 100%;">
+                <v-form class="mx-auto" style="max-width: 400px; width: 100%;" 
+                  @submit.prevent="handleRegistrationByPassword"
+                  v-model="valid"
+                  ref="form">
                   <v-text-field
                     :label="$t('auth.register.nickname')"
                     v-model="userNickname"
                     type="text"
                     required
                     prepend-inner-icon="mdi-weight-lifter"
+                    :rules="[lengthRuleShort(), lengthRule(), requiredRule()]"
                   />
+                  <v-alert
+                    v-if="error"
+                    type="error"
+                    class="my-2">
+                    {{ error }} </v-alert>
                   <v-btn
                     color="primary"
                     class="mt-4"
                     block
-                    @click="handleRegistrationByPassword()"
-                  >
+                    type="submit"
+                  > 
                     {{ $t('auth.register.register') }}
                   </v-btn>
                 </v-form>

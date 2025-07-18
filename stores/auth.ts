@@ -64,21 +64,31 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const checkEmailAvailability = async (email: string, password: string): Promise<boolean> => {
+  const checkEmailAvailability = async (email: string): Promise<boolean> => {
     loading.value = true
     error.value = null
 
     try {
-      const signInMethods = await fetchSignInMethodsForEmail(auth, email)
-      if (signInMethods.length === 0) {
-        error.value = 'Brak konta powiązanego z tym emailem.'
-        loading.value = false
-        return true
-      }
+      // const signInMethods = await fetchSignInMethodsForEmail(auth, email)
+      // if (signInMethods.length === 0) {
+      //   error.value = 'No account associated with this email.'
+      //   loading.value = false
+      //   return true
+      // }
 
-      error.value = 'Email jest już używany.'
+      const { collection, query, where, getDocs } = await import('firebase/firestore')
+      const usersQuery = query(collection(db, 'users'), where('email', '==', email))
+      const querySnapshot = await getDocs(usersQuery)
+      
+      if (!querySnapshot.empty) {
+        error.value = 'Email is already in use.'
+        loading.value = false
+        return false
+      }
+      error.value = 'No account associated with this email.'
       loading.value = false
-      return false
+      return true
+
     } catch (err: any) {
       error.value = err.message
       console.log(err)
