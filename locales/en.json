@@ -4,6 +4,7 @@
     "header2": "with us",
     "subtitle": "Start your training journey here and now!",
     "signUp": "Sign up",
+    "signIn": "Sign in",
     "step1": {
       "label": "Step 1",
       "title": "Create account",
@@ -30,6 +31,51 @@
     "profile": "Profile",
     "trainings": "Trainings",
     "trainingHistory": "Training history",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "google": "Login with Google",
+      "title": "What's on the plan today, champ?",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Login",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "register": "Register"
+    },
+    "register": {
+      "register": "Register",
+      "stepper": {
+        "step1": {
+          "label": "Account",
+          "title": "Create account",
+          "text": "Firstly, create your account on our website."
+        },
+        "step2": {
+          "label": "Personal data",
+          "title": "Personal data",
+          "text": "Let's get to know you better! Please provide your personal data."
+        },
+        "step3": {
+          "label": "Finish",
+          "title": "Finish",
+          "text": "What should we call you, champ?"
+        }
+      },
+      "google": "Use Google account",
+      "nickname": "Nickname",
+      "dateBirth": "Date of birth",
+      "title": "Register",
+      "name": "Name",
+      "surname": "Surname",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Register",
+      "alreadyHaveAccount": "Already have an account?",
+      "login": "Login"
+    },
     "logout": "Logout"
   }
 }

@@ -3,8 +3,9 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const router = useRouter()
 
-const steps = [
+const steps = computed(() => [
   {
     label: t('landingPage.step1.label'),
     title: t('landingPage.step1.title'),
@@ -23,7 +24,7 @@ const steps = [
     text: t('landingPage.step3.text'),
     icon: 'mdi-run',
   },
-]
+])
 
 const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
 </script>
@@ -45,7 +46,12 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
           <p class="text-subtitle-1">
             {{ $t("landingPage.subtitle") }}
           </p>
-          <v-btn>{{ $t("landingPage.signUp") }}</v-btn>
+          <v-btn @click="router.push('auth/register')">
+            {{ $t("landingPage.signUp") }}
+          </v-btn>
+          <v-btn @click="router.push('auth/login')">
+            {{ $t("landingPage.signIn") }}
+          </v-btn>
         </div>
       </v-col>
       <v-col class="d-flex justify-center" cols="12" md="6">
@@ -53,7 +59,7 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
           class="flex-grow-0"
           height="400"
           width="400"
-          src="/images/personal-trainer.svg"
+          src="public/images/personal-trainer.svg"
         >
           <template #placeholder>
             <div class="d-flex align-center justify-center fill-height">
