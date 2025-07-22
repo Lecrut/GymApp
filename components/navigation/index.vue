@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
+
 
 const { t } = useI18n()
 
@@ -73,7 +77,11 @@ const isAuthenticated = ref(true)
 <template>
   <v-app-bar>
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-    <v-app-bar-title>GymApp</v-app-bar-title>
+    <v-app-bar-title>
+      <v-btn to="/" variant="text" prepend-icon="mdi-dumbbell" size="large">
+        GymApp
+      </v-btn>
+    </v-app-bar-title>
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer" temporary>
