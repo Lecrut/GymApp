@@ -16,22 +16,6 @@ const loading = ref(true)
 
 const userItems = computed(() => [
   {
-    title: t('navigation.statistics'),
-    value: 'statistics',
-    props: {
-      prependIcon: 'mdi-chart-scatter-plot',
-      image: '/images/user-statistics.svg'
-    },
-  },
-  {
-    title: t('navigation.profile'),
-    value: 'profile',
-    props: {
-      prependIcon: 'mdi-account-circle',
-      image: '/images/user-profile.svg'
-    },
-  },
-  {
     title: t('navigation.trainings'),
     value: 'trainings',
     props: {
@@ -47,13 +31,22 @@ const userItems = computed(() => [
       image: '/images/training-history.svg'
     },
   },
-  // {
-  //   title: t('navigation.logout'),
-  //   value: 'logout',
-  //   props: {
-  //     prependIcon: 'mdi-logout',
-  //   },
-  // },
+  {
+    title: t('navigation.statistics'),
+    value: 'statistics',
+    props: {
+      prependIcon: 'mdi-chart-scatter-plot',
+      image: '/images/user-statistics.svg'
+    },
+  },
+  {
+    title: t('navigation.profile'),
+    value: 'profile',
+    props: {
+      prependIcon: 'mdi-account-circle',
+      image: '/images/user-profile.svg'
+    },
+  },
 ])
 
 
