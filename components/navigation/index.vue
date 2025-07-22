@@ -3,29 +3,30 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 
+const router = useRouter()
 const authStore = useAuthStore()
-
+const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const { t } = useI18n()
 
 const guestItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: 'home',
+    value: '',
     props: {
       prependIcon: 'mdi-home',
     },
   },
   {
     title: t('navigation.login'),
-    value: 'login',
+    value: 'auth/login',
     props: {
       prependIcon: 'mdi-login',
     },
   },
   {
     title: t('navigation.register'),
-    value: 'register',
+    value: 'auth/register',
     props: {
       prependIcon: 'mdi-pen',
     },
@@ -35,7 +36,7 @@ const guestItems = computed(() => [
 const userItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: 'home',
+    value: 'user',
     props: {
       prependIcon: 'mdi-home',
     },
@@ -61,17 +62,21 @@ const userItems = computed(() => [
       prependIcon: 'mdi-history',
     },
   },
-  {
-    title: t('navigation.logout'),
-    value: 'logout',
-    props: {
-      prependIcon: 'mdi-logout',
-    },
-  },
+  // {
+  //   title: t('navigation.logout'),
+  //   value: 'logout',
+  //   props: {
+  //     prependIcon: 'mdi-logout',
+  //   },
+  // },
 ])
 
+async function handleLogout() {
+  await authStore.logout()
+  router.push('/')
+}
+
 const drawer = ref(false)
-const isAuthenticated = ref(true)
 </script>
 
 <template>
@@ -85,6 +90,17 @@ const isAuthenticated = ref(true)
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer" temporary>
-    <v-list :items="isAuthenticated ? userItems : guestItems" />
+    <v-list :items="isAuthenticated ? userItems : guestItems" >
+      <v-list-item
+        v-for="item in (isAuthenticated ? userItems : guestItems)"
+        :key="item.value"
+        :to="`/${item.value}`"
+        :prepend-icon="item.props.prependIcon"
+      >
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+      </v-list-item>
+      <v-list-item v-if="isAuthenticated" @click="handleLogout" prepend-icon="mdi-logout">
+        <v-list-item-title>{{ t('navigation.logout') }}</v-list-item-title></v-list-item>
+    </v-list>
   </v-navigation-drawer>
 </template>
