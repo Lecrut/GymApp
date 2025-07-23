@@ -2,6 +2,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
+import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword } from 'firebase/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = getAuth()
@@ -63,6 +64,83 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const checkEmailAvailability = async (email: string): Promise<boolean> => {
+    loading.value = true
+    error.value = null
+
+    try {
+      // const signInMethods = await fetchSignInMethodsForEmail(auth, email)
+      // if (signInMethods.length === 0) {
+      //   error.value = 'No account associated with this email.'
+      //   loading.value = false
+      //   return true
+      // }
+
+      const { collection, query, where, getDocs } = await import('firebase/firestore')
+      const usersQuery = query(collection(db, 'users'), where('email', '==', email))
+      const querySnapshot = await getDocs(usersQuery)
+      
+      if (!querySnapshot.empty) {
+        error.value = 'Email is already in use.'
+        loading.value = false
+        return false
+      }
+      error.value = 'No account associated with this email.'
+      loading.value = false
+      return true
+
+    } catch (err: any) {
+      error.value = err.message
+      console.log(err)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const registerByPassword = async (userDataInput: IUser, password: string): Promise<boolean> => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, userDataInput.email, password)
+      const user = userCredential.user
+
+      const userRef = doc(db, 'users', user.uid)
+      await setDoc(userRef, {
+        ...userDataInput,
+        created: new Date(),
+      })
+
+      await fetchUserData(user.uid)
+      return true
+    } catch (err: any) {
+      error.value = err.message
+      console.log(err)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const loginWithEmail = async (email: string, password: string): Promise<boolean> => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      user.value = userCredential.user
+      await fetchUserData(userCredential.user.uid)
+      return true
+    } catch (err: any) {
+      error.value = err.message
+      console.log(err)
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   const logout = async () => {
     loading.value = true
     error.value = null
@@ -87,6 +165,9 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     loginWithGoogle,
     fetchUserData,
+    registerByPassword,
+    checkEmailAvailability,
+    loginWithEmail,
     logout,
   }
 })

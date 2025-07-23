@@ -46,7 +46,7 @@
   "auth": {
     "login": {
       "google": "Zaloguj się przez Google",
-      "title": "Chyba pora na trening!",
+      "title": "Witaj z powrotem dziku, co dzisiaj w planie?",
       "email": "Email",
       "password": "Hasło",
       "submit": "Zaloguj się",
