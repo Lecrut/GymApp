@@ -41,7 +41,12 @@
     "startYourTraining": "Start your training",
     "rightNow": "Now",
     "description": "Every weight lifted is a step towards a stronger version of yourself!",
-    "letsGo": "Let's go!"
+    "letsGo": "Let's go!",
+    "form": {
+      "breakTime": "Break time",
+      "startSet": "Start set",
+      "endSet": "End set"
+    }
   },
   "auth": {
     "login": {

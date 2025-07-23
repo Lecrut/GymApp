@@ -11,8 +11,8 @@ const intervalId = ref<NodeJS.Timeout | null>(null);
 function startTimer() {
     timer.value = 0;
     intervalId.value = setInterval(() => {
-        timer.value++;
-    }, 1000);
+        timer.value += 0.1;
+    }, 100);
 }
 
 function stopTimer() {
@@ -33,13 +33,16 @@ watch(isShow, (newVal) => {
 
 <template>
     <v-dialog v-model="isShow" persistent>
-        <v-card>
+        <v-card class="pa-4">
             <v-card-text>
-                <!-- Timer display -->
-                <div>Elapsed Time: {{ timer }} seconds</div>
-                <!-- Stop button -->
-                <v-btn @click="stopTimer">Stop</v-btn>
-                <v-btn @click="startTimer">Start</v-btn>
+                <div class="d-flex flex-column align-center">
+                    <v-progress-circular color="primary" size="100" :width="12" indeterminate />
+                    <div class="text-h6 mt-4">
+                        {{ $t("training.form.breakTime") }}: {{ Math.round(timer * 10) / 10 }} s
+                    </div>
+
+                    <v-btn @click="stopTimer">{{ $t("training.form.startSet") }}</v-btn>
+                </div>
             </v-card-text>
         </v-card>
     </v-dialog>

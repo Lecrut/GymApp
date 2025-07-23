@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import TrainingDialog from '@/components/dialogs/TrainingDialog.vue'
+// import auth from '~/middleware/auth'
+
+// definePageMeta({
+//     middleware: [auth]
+// })
 
 const isShowDialog = ref(false)
 

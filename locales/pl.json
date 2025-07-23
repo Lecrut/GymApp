@@ -41,7 +41,12 @@
     "startYourTraining": "Rozpocznij swój trening",
     "rightNow": "Teraz",
     "description": "Każdy podniesiony ciężar to krok w kierunku silniejszej wersji siebie!",
-    "letsGo": "Zaczynajmy!"
+    "letsGo": "Zaczynajmy!",
+    "form": {
+      "breakTime": "Czas przerwy",
+      "startSet": "Rozpocznij serię",
+      "endSet": "Zakończ serię"
+    }
   },
   "auth": {
     "login": {
