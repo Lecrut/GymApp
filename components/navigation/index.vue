@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const guestItems = computed(() => [
   {
@@ -31,28 +33,28 @@ const guestItems = computed(() => [
 const userItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: 'home',
+    value: 'user/home',
     props: {
       prependIcon: 'mdi-home',
     },
   },
   {
     title: t('navigation.profile'),
-    value: 'profile',
+    value: 'user/profile',
     props: {
       prependIcon: 'mdi-account-circle',
     },
   },
   {
     title: t('navigation.trainings'),
-    value: 'trainings',
+    value: 'user/gym-training',
     props: {
       prependIcon: 'mdi-dumbbell',
     },
   },
   {
     title: t('navigation.trainingHistory'),
-    value: 'training-history',
+    value: 'user/training-history',
     props: {
       prependIcon: 'mdi-history',
     },
@@ -68,6 +70,17 @@ const userItems = computed(() => [
 
 const drawer = ref(false)
 const isAuthenticated = ref(true)
+
+function handleItemClick(value: string) {
+  if (value === 'logout') {
+    isAuthenticated.value = false
+    router.push('/')
+  }
+  else {
+    router.push(`/${value}`)
+  }
+  drawer.value = false
+}
 </script>
 
 <template>
@@ -82,10 +95,16 @@ const isAuthenticated = ref(true)
     v-model="drawer"
     temporary
   >
-    <v-list
-      :items="isAuthenticated
-        ? userItems
-        : guestItems"
-    />
+    <v-list>
+      <v-list-item
+        v-for="item in (isAuthenticated
+          ? userItems
+          : guestItems)"
+        :key="item.value"
+        :prepend-icon="item.props.prependIcon"
+        :title="item.title"
+        @click="handleItemClick(item.value)"
+      />
+    </v-list>
   </v-navigation-drawer>
 </template>
