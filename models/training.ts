@@ -1,33 +1,41 @@
-import type { DocumentReference } from 'firebase/firestore'
-
-export interface ITraining {
-  user: DocumentReference | null
-  date: Date
-  sets: ITrainingSet[]
-}
-
-export interface ITrainingSet {
+export interface TrainingSet {
+  reps: number
   weight: number
-  repetitions: number
-  breakTime: number
+  duration: number
+  timestamp: Date
 }
 
-export class TrainingModel implements ITraining {
-  user: DocumentReference | null
-  date: Date
-  sets: ITrainingSet[]
+export interface Exercise {
+  name: string
+  sets: TrainingSet[]
+}
 
-  constructor(data: ITraining) {
-    this.user = data.user || null
+export interface TrainingSession {
+  id: string
+  date: Date
+  exercises: Exercise[]
+  totalDuration: number
+}
+
+export class TrainingModel implements TrainingSession {
+  id: string
+  date: Date
+  exercises: Exercise[]
+  totalDuration: number
+
+  constructor(data: TrainingSession) {
+    this.id = data.id
     this.date = data.date || new Date()
-    this.sets = data.sets || []
+    this.exercises = data.exercises || []
+    this.totalDuration = data.totalDuration || 0
   }
 }
 
-export function toMapTraining(data?: Partial<ITraining>): ITraining {
+export function toMapTraining(data?: Partial<TrainingSession>): TrainingSession {
   return {
-    user: data?.user || null,
+    id: data?.id || '',
     date: data?.date || new Date(),
-    sets: data?.sets || [],
+    exercises: data?.exercises || [],
+    totalDuration: data?.totalDuration || 0,
   }
 }

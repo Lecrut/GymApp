@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWith
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
+import { useTrainingStore } from './training'
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = getAuth()
@@ -157,6 +158,9 @@ export const useAuthStore = defineStore('auth', () => {
       await signOut(auth)
       user.value = null
       userData.value = null
+
+      const trainingStore = useTrainingStore()
+      trainingStore.resetStore()
     }
     catch (err: any) {
       error.value = err.message

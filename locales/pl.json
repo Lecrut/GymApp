@@ -45,7 +45,19 @@
     "form": {
       "breakTime": "Czas przerwy",
       "startSet": "Rozpocznij serię",
-      "endSet": "Zakończ serię"
+      "endSet": "Zakończ serię",
+      "title": "Sesja Treningowa",
+      "exerciseName": "Nazwa Ćwiczenia",
+      "set": "Seria",
+      "time": "Czas",
+      "stop": "Stop",
+      "reps": "Powtórzenia",
+      "weight": "Ciężar",
+      "saveSet": "Zapisz Serię",
+      "setsCompleted": "Ukończone Serie",
+      "nextSet": "Następna Seria",
+      "nextExercise": "Następne Ćwiczenie",
+      "finishTraining": "Zakończ Trening"
     }
   },
   "auth": {

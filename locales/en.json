@@ -45,7 +45,20 @@
     "form": {
       "breakTime": "Break time",
       "startSet": "Start set",
-      "endSet": "End set"
+      "endSet": "End set",
+      "title": "Training Session",
+      "exerciseName": "Exercise Name",
+      "start": "Start",
+      "set": "Set",
+      "time": "Time",
+      "stop": "Stop",
+      "reps": "Reps",
+      "weight": "Weight",
+      "saveSet": "Save Set",
+      "setsCompleted": "Sets Completed",
+      "nextSet": "Next Set",
+      "nextExercise": "Next Exercise",
+      "finishTraining": "Finish Training"
     }
   },
   "auth": {
