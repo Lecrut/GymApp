@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import type { IUser } from '~/models/user'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '../../stores/auth'
-import { Timestamp } from 'firebase/firestore'
-import { UserModel, type IUser } from '~/models/user'
+import formValidation from '~/composables/formValidation'
 import { emailRule, lengthRule, lengthRuleShort, passwordRule, requiredRule, timestampPastRule } from '~/composables/rules'
-import formValidation from '~/composables/formValidation';
+import { useAuthStore } from '../../stores/auth'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -20,9 +19,6 @@ const userConfirmPassword = ref('')
 const userName = ref('')
 const userSurname = ref('')
 const userNickname = ref('')
-const userDateBirth = computed(() => {
-  return selectedDate.value ? Timestamp.fromDate(new Date(selectedDate.value)) : null
-})
 
 const selectedDate = ref<string | null>(null)
 const dialog = ref(false)
@@ -37,17 +33,18 @@ function formatSelectedDate(date: string | null): string {
   const day = String(d.getDate()).padStart(2, '0')
   const month = String(d.getMonth() + 1).padStart(2, '0')
   const year = d.getFullYear()
+
   return `${day}-${month}-${year}`
 }
 
 const allowDates = computed(() => {
   const today = new Date()
   const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate())
+
   return maxDate.toISOString().substr(0, 10)
 })
 
 function checkPasswordsMatch(): boolean {
-  console.log('Checking passwords match:', userPassword.value, userConfirmPassword.value)
   return userPassword.value === userConfirmPassword.value
 }
 
@@ -74,7 +71,6 @@ async function pushByGoogle() {
     await authStore.loginWithGoogle()
     if (authStore.error) {
       error.value = authStore.error
-      console.log(error.value)
     }
     else {
       router.push('/user')
@@ -85,25 +81,25 @@ async function pushByGoogle() {
   }
 }
 
-async function checkEmail(userEmail: string) {
+async function checkEmail(userEmailVariable: string) {
   try {
     if (!checkPasswordsMatch()) {
-      console.log('Passwords do not match')
       error.value = 'Passwords do not match'
+
       return
     }
     if (await isValid()) {
-      const isSuccess = await authStore.checkEmailAvailability(userEmail)
-      console.log('Email availability check result:', isSuccess)
+      const isSuccess = await authStore.checkEmailAvailability(userEmailVariable)
       if (isSuccess) {
-        console.log('Email is available')
         currentStep.value++
         error.value = null
-      } else {
+      }
+      else {
         error.value = authStore.error || 'Email in use'
       }
     }
-  } catch (err: any) {
+  }
+  catch (err: any) {
     error.value = err.message
   }
 }
@@ -112,22 +108,20 @@ async function checkNextStep() {
   if (await isValid()) {
     currentStep.value++
     error.value = null
-  } else {
-    console.log('Form is not valid')
+  }
+  else {
     error.value = 'Please fill in all required fields correctly.'
   }
 }
 
-
 async function handleRegistrationByPassword() {
   try {
     if (!checkPasswordsMatch()) {
-      console.log('Passwords do not match')
       error.value = 'Passwords do not match'
+
       return
     }
     if (await isValid()) {
-      console.log('Form is valid, proceeding with registration')
       const newUser: IUser = {
         email: userEmail.value,
         name: userName.value,
@@ -138,16 +132,16 @@ async function handleRegistrationByPassword() {
         role: 'user',
         created: new Date(),
       }
-      console.log('New user data:', newUser)
       await authStore.registerByPassword(newUser, userPassword.value)
       if (authStore.error) {
         error.value = authStore.error
-        console.log(error.value)
-      } else {
+      }
+      else {
         router.push('/user')
       }
     }
-  } catch (err: any) {
+  }
+  catch (err: any) {
     error.value = err.message
   }
 }
@@ -160,11 +154,20 @@ async function handleRegistrationByPassword() {
     class="bg-blue-lighten-1 d-flex flex-column pt-7 pb-7 ga-10"
   >
     <v-row class="my-auto">
-      <v-col class="d-flex justify-center " cols="12" md="6">
-        <v-card color="secondary" class="pa-6 w-100 mx-auto" style="max-width: 700px; width: 100%;">
+      <v-col
+        class="d-flex justify-center"
+        cols="12"
+        md="6"
+      >
+        <v-card
+          color="secondary"
+          class="pa-6 w-100 mx-auto"
+          style="max-width: 700px; width: 100%;"
+        >
           <v-card-title class="text-h5 mb-4 text-center">
             {{ $t('auth.register.register').toUpperCase() }}
           </v-card-title>
+
           <v-btn
             color="primary"
             class="my-4"
@@ -174,6 +177,7 @@ async function handleRegistrationByPassword() {
           >
             {{ $t('auth.register.google') }}
           </v-btn>
+
           <v-stepper
             v-model="currentStep"
             class="mx-auto"
@@ -186,43 +190,58 @@ async function handleRegistrationByPassword() {
                 <v-card-text class="text-center mb-4">
                   {{ steps[0].text }}
                 </v-card-text>
+
                 <v-form
+                  ref="form"
+                  v-model="valid"
                   class="mx-auto"
                   style="max-width: 400px; width: 100%;"
-                  v-model="valid"
-                  ref="form"
                   @submit.prevent="checkEmail(userEmail)"
                 >
                   <v-text-field
-                    :label="$t('auth.register.email')"
                     v-model="userEmail"
+                    :label="$t('auth.register.email')"
                     type="email"
                     required
                     prepend-inner-icon="mdi-email"
-                    :rules="[emailRule(), requiredRule()]"
+                    :rules="[
+                      emailRule(),
+                      requiredRule(),
+                    ]"
                   />
+
                   <v-text-field
-                    :label="$t('auth.register.password')"
                     v-model="userPassword"
+                    :label="$t('auth.register.password')"
                     type="password"
                     required
                     prepend-inner-icon="mdi-lock"
-                    :rules="[passwordRule(), lengthRuleShort()]"
+                    :rules="[
+                      passwordRule(),
+                      lengthRuleShort(),
+                    ]"
                   />
+
                   <v-text-field
-                    :label="$t('auth.register.confirmPassword')"
                     v-model="userConfirmPassword"
+                    :label="$t('auth.register.confirmPassword')"
                     type="password"
                     required
                     prepend-inner-icon="mdi-lock"
-                    :rules="[passwordRule(), lengthRuleShort()]"
+                    :rules="[
+                      passwordRule(),
+                      lengthRuleShort(),
+                    ]"
                   />
+
                   <v-alert
                     v-if="error"
                     type="error"
-                    class="my-2">
+                    class="my-2"
+                  >
                     {{ error }}
                   </v-alert>
+
                   <v-btn
                     color="primary"
                     class="mt-4"
@@ -231,9 +250,7 @@ async function handleRegistrationByPassword() {
                   >
                     {{ $t('landingPage.next') }}
                   </v-btn>
-                  
                 </v-form>
-                
               </v-stepper-content>
             </template>
 
@@ -242,47 +259,71 @@ async function handleRegistrationByPassword() {
                 <v-card-text class="text-center mb-4">
                   {{ steps[1].text }}
                 </v-card-text>
-                <v-form class="mx-auto" style="max-width: 400px; width: 100%;" 
-                  @submit.prevent="checkNextStep()"
+
+                <v-form
+                  ref="form"
                   v-model="valid"
-                  ref="form">
+                  class="mx-auto"
+                  style="max-width: 400px; width: 100%;"
+                  @submit.prevent="checkNextStep()"
+                >
                   <v-text-field
-                    :label="$t('auth.register.name')"
                     v-model="userName"
+                    :label="$t('auth.register.name')"
                     type="text"
                     required
                     prepend-inner-icon="mdi-account-outline"
-                    :rules="[lengthRuleShort(), lengthRule(), requiredRule()]"
+                    :rules="[
+                      lengthRuleShort(),
+                      lengthRule(),
+                      requiredRule(),
+                    ]"
                   />
+
                   <v-text-field
-                    :label="$t('auth.register.surname')"
                     v-model="userSurname"
+                    :label="$t('auth.register.surname')"
                     type="text"
                     required
                     prepend-inner-icon="mdi-account-outline"
-                    :rules="[lengthRuleShort(), lengthRule(), requiredRule()]"
+                    :rules="[
+                      lengthRuleShort(),
+                      lengthRule(),
+                      requiredRule(),
+                    ]"
                   />
+
                   <v-text-field
                     :model-value="formatSelectedDate(selectedDate)"
                     :label="$t('auth.register.dateBirth')"
                     required
                     prepend-inner-icon="mdi-calendar"
                     readonly
+                    :rules="[
+                      requiredRule(),
+                      timestampPastRule(),
+                    ]"
                     @click="dialog = true"
-                    :rules="[requiredRule(), timestampPastRule()]"
                   />
-                  <v-dialog v-model="dialog" width="290">
+
+                  <v-dialog
+                    v-model="dialog"
+                    width="290"
+                  >
                     <v-date-picker
                       v-model="selectedDate"
                       :max="allowDates"
                       @update:model-value="dialog = false"
                     />
                   </v-dialog>
+
                   <v-alert
                     v-if="error"
                     type="error"
-                    class="my-2">
-                    {{ error }} </v-alert>
+                    class="my-2"
+                  >
+                    {{ error }}
+                  </v-alert>
 
                   <v-btn
                     color="primary"
@@ -290,7 +331,7 @@ async function handleRegistrationByPassword() {
                     block
                     type="submit"
                   >
-                  <!-- @click="currentStep++" -->
+                    <!-- @click="currentStep++" -->
                     {{ $t('landingPage.next') }}
                   </v-btn>
                 </v-form>
@@ -299,32 +340,44 @@ async function handleRegistrationByPassword() {
 
             <template #item.3>
               <v-stepper-content step="3">
-                <v-card-title class="text-h5 mb-4 text-center ">
+                <v-card-title class="text-h5 mb-4 text-center">
                   {{ steps[2].text }}
                 </v-card-title>
-                <v-form class="mx-auto" style="max-width: 400px; width: 100%;" 
-                  @submit.prevent="handleRegistrationByPassword"
+
+                <v-form
+                  ref="form"
                   v-model="valid"
-                  ref="form">
+                  class="mx-auto"
+                  style="max-width: 400px; width: 100%;"
+                  @submit.prevent="handleRegistrationByPassword"
+                >
                   <v-text-field
-                    :label="$t('auth.register.nickname')"
                     v-model="userNickname"
+                    :label="$t('auth.register.nickname')"
                     type="text"
                     required
                     prepend-inner-icon="mdi-weight-lifter"
-                    :rules="[lengthRuleShort(), lengthRule(), requiredRule()]"
+                    :rules="[
+                      lengthRuleShort(),
+                      lengthRule(),
+                      requiredRule(),
+                    ]"
                   />
+
                   <v-alert
                     v-if="error"
                     type="error"
-                    class="my-2">
-                    {{ error }} </v-alert>
+                    class="my-2"
+                  >
+                    {{ error }}
+                  </v-alert>
+
                   <v-btn
                     color="primary"
                     class="mt-4"
                     block
                     type="submit"
-                  > 
+                  >
                     {{ $t('auth.register.register') }}
                   </v-btn>
                 </v-form>
@@ -333,7 +386,12 @@ async function handleRegistrationByPassword() {
           </v-stepper>
         </v-card>
       </v-col>
-      <v-col class="d-flex justify-center my-auto" cols="12" md="6">
+
+      <v-col
+        class="d-flex justify-center my-auto"
+        cols="12"
+        md="6"
+      >
         <v-img
           class="flex-grow-0"
           height="100%"
@@ -342,7 +400,10 @@ async function handleRegistrationByPassword() {
         >
           <template #placeholder>
             <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular color="grey-lighten-4" indeterminate />
+              <v-progress-circular
+                color="grey-lighten-4"
+                indeterminate
+              />
             </div>
           </template>
         </v-img>
@@ -350,7 +411,3 @@ async function handleRegistrationByPassword() {
     </v-row>
   </v-container>
 </template>
-
-<style>
-
-</style>

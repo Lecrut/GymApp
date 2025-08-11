@@ -73,10 +73,19 @@ const isAuthenticated = ref(true)
 <template>
   <v-app-bar>
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+
+    <!-- eslint-disable-next-line vue/no-bare-strings-in-template -->
     <v-app-bar-title>GymApp</v-app-bar-title>
   </v-app-bar>
 
-  <v-navigation-drawer v-model="drawer" temporary>
-    <v-list :items="isAuthenticated ? userItems : guestItems" />
+  <v-navigation-drawer
+    v-model="drawer"
+    temporary
+  >
+    <v-list
+      :items="isAuthenticated
+        ? userItems
+        : guestItems"
+    />
   </v-navigation-drawer>
 </template>
