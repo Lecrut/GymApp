@@ -93,7 +93,7 @@
       "google": "Zarejestruj się przez Google",
       "nickname": "Nick",
       "dateBirth": "Data urodzenia",
-      "title": "Rejestracja",
+      "title": "Rejestracja", 
       "name": "Imię",
       "surname": "Nazwisko",
       "email": "Email",
@@ -103,6 +103,21 @@
       "alreadyHaveAccount": "Masz już konto?",
       "login": "Zaloguj się"
     },
-    "logout": "Wyloguj się"
+    "logout": "Wyloguj się",
+    "email": "Email",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "nickname": "Pseudonim",
+    "editProfile": "Edytuj Profil",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź Hasło",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "nick": "Nazwa użytkownika"
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Informacje osobiste",
+    "contactInfo": "Informacje kontaktowe"
   }
 }

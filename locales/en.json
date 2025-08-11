@@ -104,6 +104,21 @@
       "alreadyHaveAccount": "Already have an account?",
       "login": "Login"
     },
-    "logout": "Logout"
+    "logout": "Logout",
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name", 
+    "nickname": "Nickname",
+    "editProfile": "Edit Profile",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Name",
+    "surname": "Surname",
+    "nick": "Username"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "contactInfo": "Contact Information"
   }
 }

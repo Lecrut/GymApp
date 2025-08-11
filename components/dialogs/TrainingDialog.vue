@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Exercise } from '~/models/training'
+// Use specific imports instead of default
 import { ref, watch } from 'vue'
 import { useTrainingStore } from '~/stores/training'
 
