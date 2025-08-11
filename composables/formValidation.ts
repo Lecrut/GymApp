@@ -14,8 +14,9 @@ export default function formValidation() {
 
       return tmp
     }
-    catch (e) {
+    catch (e: any) {
       valid.value = false
+      console.error('Validation error:', e)
 
       return false
     }
