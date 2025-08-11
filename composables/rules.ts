@@ -1,5 +1,7 @@
 export const emailPattern
     = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-z\-0-9]+\.)+[a-z]{2,}))$/i
+
+// eslint-disable-next-line regexp/optimal-lookaround-quantifier
 export const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.{8,})/
 
 export const registerPattern = /^[A-Z]$/i
