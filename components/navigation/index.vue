@@ -33,7 +33,7 @@ const guestItems = computed(() => [
 const userItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: 'user/home',
+    value: 'user/',
     props: {
       prependIcon: 'mdi-home',
     },
