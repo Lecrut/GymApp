@@ -10,7 +10,8 @@ definePageMeta({
 })
 
 const authStore = useAuthStore()
-const userData = ref<typeof authStore.userData | null>(null)
+const { userData } = storeToRefs(authStore)
+
 const loading = ref(true)
 
 const isShowEditDialog = ref(false)
@@ -62,7 +63,6 @@ onMounted(() => {
           </template>
 
           <template v-else>
-            <!-- Profile Header -->
             <v-card-text class="text-center pa-6">
               <v-avatar
                 size="120"
@@ -88,7 +88,6 @@ onMounted(() => {
 
             <v-divider />
 
-            <!-- Profile Information -->
             <v-card-text class="pa-6">
               <v-row>
                 <v-col cols="12">

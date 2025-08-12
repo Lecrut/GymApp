@@ -71,7 +71,7 @@ watch(isShow, (newValue) => {
   >
     <v-card>
       <v-card-title class="text-h5">
-        Edytuj profil
+        {{ $t('auth.editProfile') }}
       </v-card-title>
       
       <v-card-text>
@@ -80,7 +80,7 @@ watch(isShow, (newValue) => {
             <v-col cols="12" md="6">
               <v-text-field
                 v-model="name"
-                label="Imię"
+                :label="$t('auth.name')"
                 :rules="[requiredRule(), lengthRule()]"
                 variant="outlined"
                 density="comfortable"
@@ -90,7 +90,7 @@ watch(isShow, (newValue) => {
             <v-col cols="12" md="6">
               <v-text-field
                 v-model="surname"
-                label="Nazwisko"
+                :label="$t('auth.surname')"
                 :rules="[requiredRule(), surnameLengthRule()]"
                 variant="outlined"
                 density="comfortable"
@@ -100,7 +100,7 @@ watch(isShow, (newValue) => {
             <v-col cols="12">
               <v-text-field
                 v-model="nick"
-                label="Nick"
+                :label="$t('auth.nick')"
                 :rules="[requiredRule(), lengthRuleShort(), lengthRule()]"
                 variant="outlined"
                 density="comfortable"
@@ -110,7 +110,7 @@ watch(isShow, (newValue) => {
             <v-col cols="12">
               <v-text-field
                 v-model="email"
-                label="Email"
+                :label="$t('auth.email')"
                 :rules="[requiredRule(), emailRule()]"
                 disabled
                 variant="outlined"
@@ -122,7 +122,7 @@ watch(isShow, (newValue) => {
             <v-col cols="12">
               <v-text-field
                 v-model="dateOfBirth"
-                label="Data urodzenia"
+                :label="$t('auth.register.dateBirth')"
                 :rules="[timestampPastRule()]"
                 variant="outlined"
                 density="comfortable"
@@ -140,7 +140,7 @@ watch(isShow, (newValue) => {
           variant="text"
           @click="closeDialog"
         >
-          Anuluj
+          {{ $t('common.cancel') }}
         </v-btn>
         <v-btn
           color="primary"
@@ -148,7 +148,7 @@ watch(isShow, (newValue) => {
           :disabled="!valid"
           @click="editUser"
         >
-          Zapisz
+          {{ $t('common.save') }}
         </v-btn>
       </v-card-actions>
     </v-card>

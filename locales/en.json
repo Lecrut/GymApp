@@ -139,5 +139,9 @@
   },
   "user": {
     "gymTraining": "Gym Training"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }

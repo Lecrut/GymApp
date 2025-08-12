@@ -139,5 +139,9 @@
   },
   "user": {
     "gymTraining": "Trening na siłowni"
+  },
+  "common": {
+    "cancel": "Anuluj",
+    "save": "Zapisz"
   }
 }
