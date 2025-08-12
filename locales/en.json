@@ -1,81 +1,143 @@
 {
-  "landingPage": {
-    "header1": "Train like a pro",
-    "header2": "with us",
-    "subtitle": "Start your training journey here and now!",
-    "signUp": "Sign up",
-    "signIn": "Sign in",
-    "step1": {
-      "label": "Step 1",
-      "title": "Create account",
-      "text": "Sign up on our website."
-    },
-    "step2": {
-      "label": "Step 2",
-      "title": "Workout plan",
-      "text": "Choose one of many workout plans which fits you the most."
-    },
-    "step3": {
-      "label": "Step 3",
-      "title": "Train",
-      "text": "Start training with choosen workout plan and achieve your goals."
-    },
-    "next": "Next",
-    "previous": "Previous",
-    "slogan": "Collect your data and visualize it with our charts and graphs. It'll help you track your progress and stay motivated. It's like having a personal coach in your pocket! Don't wait, start your fitness journey today!"
-  },
-  "navigation": {
-    "home": "Home",
-    "login": "Login",
-    "register": "Register",
-    "profile": "Profile",
-    "trainings": "Trainings",
-    "trainingHistory": "Training history",
-    "logout": "Logout"
-  },
   "auth": {
+    "confirmPassword": "Confirm Password",
+    "editProfile": "Edit Profile",
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "login": {
-      "google": "Login with Google",
-      "title": "What's on the plan today, champ?",
       "email": "Email",
-      "password": "Password",
-      "submit": "Login",
       "forgotPassword": "Forgot password?",
+      "google": "Login with Google",
       "noAccount": "Don't have an account?",
-      "register": "Register"
+      "password": "Password",
+      "register": "Register",
+      "submit": "Login",
+      "title": "What's on the plan today, champ?"
     },
+    "logout": "Logout",
+    "name": "Name",
+    "nick": "Username",
+    "nickname": "Nickname",
+    "password": "Password",
     "register": {
+      "alreadyHaveAccount": "Already have an account?",
+      "confirmPassword": "Confirm Password",
+      "dateBirth": "Date of birth",
+      "email": "Email",
+      "google": "Use Google account",
+      "login": "Login",
+      "name": "Name",
+      "nickname": "Nickname",
+      "password": "Password",
       "register": "Register",
       "stepper": {
         "step1": {
           "label": "Account",
-          "title": "Create account",
-          "text": "Firstly, create your account on our website."
+          "text": "Firstly, create your account on our website.",
+          "title": "Create account"
         },
         "step2": {
           "label": "Personal data",
-          "title": "Personal data",
-          "text": "Let's get to know you better! Please provide your personal data."
+          "text": "Let's get to know you better! Please provide your personal data.",
+          "title": "Personal data"
         },
         "step3": {
           "label": "Finish",
-          "title": "Finish",
-          "text": "What should we call you, champ?"
+          "text": "What should we call you, champ?",
+          "title": "Finish"
         }
       },
-      "google": "Use Google account",
-      "nickname": "Nickname",
-      "dateBirth": "Date of birth",
-      "title": "Register",
-      "name": "Name",
-      "surname": "Surname",
-      "email": "Email",
-      "password": "Password",
-      "confirmPassword": "Confirm Password",
       "submit": "Register",
-      "alreadyHaveAccount": "Already have an account?",
-      "login": "Login"
+      "surname": "Surname",
+      "title": "Register"
     },
-    "logout": "Logout"
+    "surname": "Surname"
+  },
+  "landingPage": {
+    "header1": "Train like a pro",
+    "header2": "with us",
+    "next": "Next",
+    "previous": "Previous",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "slogan": "Collect your data and visualize it with our charts and graphs. It'll help you track your progress and stay motivated. It's like having a personal coach in your pocket! Don't wait, start your fitness journey today!",
+    "step1": {
+      "label": "Step 1",
+      "text": "Sign up on our website.",
+      "title": "Create account"
+    },
+    "step2": {
+      "label": "Step 2",
+      "text": "Choose one of many workout plans which fits you the most.",
+      "title": "Workout plan"
+    },
+    "step3": {
+      "label": "Step 3",
+      "text": "Start training with choosen workout plan and achieve your goals.",
+      "title": "Train"
+    },
+    "subtitle": "Start your training journey here and now!"
+  },
+  "navigation": {
+    "home": "Home",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "register": "Register",
+    "trainingHistory": "Training history",
+    "trainings": "Trainings"
+  },
+  "profile": {
+    "contactInfo": "Contact Information",
+    "personalInfo": "Personal Information",
+    "title": "Profile"
+  },
+  "training": {
+    "description": "Every weight lifted is a step towards a stronger version of yourself!",
+    "form": {
+      "breakTime": "Break time",
+      "cancelTraining": "Cancel Training",
+      "completeTraining": "Complete & Save",
+      "endSet": "End set",
+      "errors": {
+        "exerciseNameRequired": "Exercise name is required",
+        "exerciseNameTooShort": "Exercise name must be at least 2 characters",
+        "invalidReps": "Number of reps must be greater than 0",
+        "invalidWeight": "Weight cannot be negative"
+      },
+      "exerciseName": "Exercise Name",
+      "exerciseTime": "Exercise Time",
+      "finishTraining": "Finish Training",
+      "kg": "kg",
+      "minutes": "min",
+      "nextExercise": "Next Exercise",
+      "nextSet": "Next Set",
+      "reps": "Reps",
+      "restTime": "Rest Time",
+      "saveSet": "Save Set",
+      "seconds": "sec",
+      "set": "Set",
+      "setsCompleted": "Sets Completed",
+      "start": "Start",
+      "startSet": "Start set",
+      "stop": "Stop",
+      "time": "Time",
+      "title": "Training Session",
+      "totalExercises": "Total Exercises",
+      "totalReps": "Total Reps",
+      "totalSets": "Total Sets",
+      "totalTime": "Total Time",
+      "totalWeight": "Total Weight",
+      "trainingSummary": "Training Summary",
+      "weight": "Weight"
+    },
+    "letsGo": "Let's go!",
+    "rightNow": "Now",
+    "start": "Start training",
+    "startYourTraining": "Start your training"
+  },
+  "user": {
+    "gymTraining": "Gym Training"
   }
 }

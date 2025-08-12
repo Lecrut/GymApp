@@ -1,8 +1,10 @@
-const emailPattern
-    = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
+export const emailPattern
+    = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-z\-0-9]+\.)+[a-z]{2,}))$/i
 
-const registerPattern = /^[A-Za-z]$/
+// eslint-disable-next-line regexp/optimal-lookaround-quantifier
+export const patternPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.{8,})/
+
+export const registerPattern = /^[A-Z]$/i
 
 // todo: haslo zmienic na 12 liter i koniec
 
@@ -58,6 +60,7 @@ export function timestampPastRule() {
   return (value: string, textError = 'Data musi być z przeszłości') => {
     const [day, month, year] = value.split('-').map(Number)
     const inputDate = new Date(year, month - 1, day)
+
     return inputDate.getTime() < Date.now() || textError
   }
 }

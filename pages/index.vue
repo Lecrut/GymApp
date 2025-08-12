@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -35,26 +36,39 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
     class="bg-blue-lighten-1 d-flex flex-column pt-7 pb-7 ga-10"
   >
     <v-row>
-      <v-col class="d-flex align-center justify-center" cols="12" md="6">
+      <v-col
+        class="d-flex align-center justify-center"
+        cols="12"
+        md="6"
+      >
         <div class="d-flex flex-column ga-3">
           <h3 class="text-h3 font-weight-bold">
             {{ $t("landingPage.header1") }}
           </h3>
+
           <h3 class="text-h3 font-weight-bold text-primary">
             {{ $t("landingPage.header2") }}
           </h3>
+
           <p class="text-subtitle-1">
             {{ $t("landingPage.subtitle") }}
           </p>
+
           <v-btn @click="router.push('auth/register')">
             {{ $t("landingPage.signUp") }}
           </v-btn>
+
           <v-btn @click="router.push('auth/login')">
             {{ $t("landingPage.signIn") }}
           </v-btn>
         </div>
       </v-col>
-      <v-col class="d-flex justify-center" cols="12" md="6">
+
+      <v-col
+        class="d-flex justify-center"
+        cols="12"
+        md="6"
+      >
         <v-img
           class="flex-grow-0"
           height="400"
@@ -63,14 +77,21 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
         >
           <template #placeholder>
             <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular color="grey-lighten-4" indeterminate />
+              <v-progress-circular
+                color="grey-lighten-4"
+                indeterminate
+              />
             </div>
           </template>
         </v-img>
       </v-col>
     </v-row>
+
     <v-row justify="center">
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-stepper
           :items="steps.map((s) => s.label)"
           bg-color="secondary"
@@ -92,8 +113,12 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
         </v-stepper>
       </v-col>
     </v-row>
+
     <v-row justify="center">
-      <v-col cols="12" md="5">
+      <v-col
+        cols="12"
+        md="5"
+      >
         <v-sparkline
           line-width="2"
           :model-value="value"
@@ -101,6 +126,7 @@ const value = ref([0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9])
           color="primary"
         />
       </v-col>
+
       <v-col
         class="d-flex flex-column justify-center font-weight-regular text-justify"
         cols="12"

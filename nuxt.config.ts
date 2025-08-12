@@ -4,7 +4,28 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
-  devtools: { enabled: true },
+  // Vite optimizations
+  vite: {
+    optimizeDeps: {
+      include: ['vuetify', 'firebase/auth', 'firebase/firestore'],
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['vue', 'vuetify'],
+            firebase: ['firebase/auth', 'firebase/firestore'],
+          },
+        },
+      },
+    },
+    vue: {
+      template: {
+        transformAssetUrls,
+      },
+    },
+  },
+  devtools: { enabled: false }, // Disable in production
   build: {
     transpile: ['vuetify'],
   },
@@ -26,13 +47,6 @@ export default defineNuxtConfig({
       })
     },
   ],
-  vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
-  },
   i18n: {
     strategy: 'no_prefix',
     defaultLocale: 'pl',
@@ -48,5 +62,19 @@ export default defineNuxtConfig({
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
     },
+  },
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext',
+      },
+    },
+  },
+  typescript: {
+    typeCheck: false, // Disable during dev, enable in CI
+  },
+  experimental: {
+    payloadExtraction: false,
+    renderJsonPayloads: false,
   },
 })

@@ -1,9 +1,11 @@
 <template>
   <v-app>
     <navigation />
-    <v-main>
+
+    <v-main class="fill-height">
       <slot />
     </v-main>
+
     <footnote />
   </v-app>
 </template>
