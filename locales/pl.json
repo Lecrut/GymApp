@@ -1,123 +1,143 @@
 {
-  "landingPage": {
-    "header1": "Trenuj jak pro",
-    "header2": "z nami",
-    "subtitle": "Zacznij swoja przygode z treningiem, tutaj i teraz!",
-    "signUp": "Zarejestruj się",
-    "signIn": "Zaloguj się",
-    "step1": {
-      "label": "Krok 1",
-      "title": "Utwórz konto",
-      "text": "Zarejestruj się na naszej stronie."
-    },
-    "step2": {
-      "label": "Krok 2",
-      "title": "Plan treningowy",
-      "text": "Wybierz jeden z wielu planów treningowych, który najbardziej Ci odpowiada."
-    },
-    "step3": {
-      "label": "Krok 3",
-      "title": "Trenuj",
-      "text": "Rozpocznij trening z wybranym planem treningowym i osiągnij swoje cele."
-    },
-    "next": "Dalej",
-    "previous": "Wstecz",
-    "slogan": "Zbieraj swoje dane i wizualizuj je za pomocą naszych wykresów i diagramów. Pomoże Ci to śledzić postępy i utrzymać motywację. To jak posiadanie osobistego trenera w kieszeni! Nie czekaj, zacznij swoją przygodę z fitnessem już dziś!"
-  },
-  "navigation": {
-    "home": "Strona główna",
-    "login": "Zaloguj się",
-    "register": "Zarejestruj się",
-    "profile": "Profil",
-    "trainings": "Treningi",
-    "trainingHistory": "Historia treningów",
-    "logout": "Wyloguj się"
-  },
-  "user": {
-    "gymTraining": "Trening na siłowni"
-  },
-  "training": {
-    "start": "Rozpocznij trening",
-    "startYourTraining": "Rozpocznij swój trening",
-    "rightNow": "Teraz",
-    "description": "Każdy podniesiony ciężar to krok w kierunku silniejszej wersji siebie!",
-    "letsGo": "Zaczynajmy!",
-    "form": {
-      "breakTime": "Czas przerwy",
-      "startSet": "Rozpocznij serię",
-      "endSet": "Zakończ serię",
-      "title": "Sesja Treningowa",
-      "exerciseName": "Nazwa Ćwiczenia",
-      "set": "Seria",
-      "time": "Czas",
-      "stop": "Stop",
-      "reps": "Powtórzenia",
-      "weight": "Ciężar",
-      "saveSet": "Zapisz Serię",
-      "setsCompleted": "Ukończone Serie",
-      "nextSet": "Następna Seria",
-      "nextExercise": "Następne Ćwiczenie",
-      "finishTraining": "Zakończ Trening"
-    }
-  },
   "auth": {
+    "confirmPassword": "Potwierdź Hasło",
+    "editProfile": "Edytuj Profil",
+    "email": "Email",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
     "login": {
-      "google": "Zaloguj się przez Google",
-      "title": "Witaj z powrotem dziku, co dzisiaj w planie?",
       "email": "Email",
-      "password": "Hasło",
-      "submit": "Zaloguj się",
       "forgotPassword": "Zapomniałeś hasła?",
+      "google": "Zaloguj się przez Google",
       "noAccount": "Nie masz konta?",
-      "register": "Zarejestruj się"
+      "password": "Hasło",
+      "register": "Zarejestruj się",
+      "submit": "Zaloguj się",
+      "title": "Witaj z powrotem dziku, co dzisiaj w planie?"
     },
+    "logout": "Wyloguj się",
+    "name": "Imię",
+    "nick": "Nazwa użytkownika",
+    "nickname": "Pseudonim",
+    "password": "Hasło",
     "register": {
+      "alreadyHaveAccount": "Masz już konto?",
+      "confirmPassword": "Potwierdź hasło",
+      "dateBirth": "Data urodzenia",
+      "email": "Email",
+      "google": "Zarejestruj się przez Google",
+      "login": "Zaloguj się",
+      "name": "Imię",
+      "nickname": "Nick",
+      "password": "Hasło",
       "register": "Zarejestruj się",
       "stepper": {
         "step1": {
           "label": "Konto",
-          "title": "Stwórz konto",
-          "text": "Na początek, stwórz swoje konto na naszej stronie."
+          "text": "Na początek, stwórz swoje konto na naszej stronie.",
+          "title": "Stwórz konto"
         },
         "step2": {
           "label": "Dane osobowe",
-          "title": "Dane osobowe",
-          "text": "Poznajmy się lepiej! Podaj swoje dane osobowe."
+          "text": "Poznajmy się lepiej! Podaj swoje dane osobowe.",
+          "title": "Dane osobowe"
         },
         "step3": {
           "label": "Zakończ",
-          "title": "Zakończ",
-          "text": "Jak mamy Cię nazywać, Dziku?"
+          "text": "Jak mamy Cię nazywać, Dziku?",
+          "title": "Zakończ"
         }
       },
-      "google": "Zarejestruj się przez Google",
-      "nickname": "Nick",
-      "dateBirth": "Data urodzenia",
-      "title": "Rejestracja", 
-      "name": "Imię",
-      "surname": "Nazwisko",
-      "email": "Email",
-      "password": "Hasło",
-      "confirmPassword": "Potwierdź hasło",
       "submit": "Zarejestruj się",
-      "alreadyHaveAccount": "Masz już konto?",
-      "login": "Zaloguj się"
+      "surname": "Nazwisko",
+      "title": "Rejestracja"
     },
+    "surname": "Nazwisko"
+  },
+  "landingPage": {
+    "header1": "Trenuj jak pro",
+    "header2": "z nami",
+    "next": "Dalej",
+    "previous": "Wstecz",
+    "signIn": "Zaloguj się",
+    "signUp": "Zarejestruj się",
+    "slogan": "Zbieraj swoje dane i wizualizuj je za pomocą naszych wykresów i diagramów. Pomoże Ci to śledzić postępy i utrzymać motywację. To jak posiadanie osobistego trenera w kieszeni! Nie czekaj, zacznij swoją przygodę z fitnessem już dziś!",
+    "step1": {
+      "label": "Krok 1",
+      "text": "Zarejestruj się na naszej stronie.",
+      "title": "Utwórz konto"
+    },
+    "step2": {
+      "label": "Krok 2",
+      "text": "Wybierz jeden z wielu planów treningowych, który najbardziej Ci odpowiada.",
+      "title": "Plan treningowy"
+    },
+    "step3": {
+      "label": "Krok 3",
+      "text": "Rozpocznij trening z wybranym planem treningowym i osiągnij swoje cele.",
+      "title": "Trenuj"
+    },
+    "subtitle": "Zacznij swoja przygode z treningiem, tutaj i teraz!"
+  },
+  "navigation": {
+    "home": "Strona główna",
+    "login": "Zaloguj się",
     "logout": "Wyloguj się",
-    "email": "Email",
-    "firstName": "Imię",
-    "lastName": "Nazwisko",
-    "nickname": "Pseudonim",
-    "editProfile": "Edytuj Profil",
-    "password": "Hasło",
-    "confirmPassword": "Potwierdź Hasło",
-    "name": "Imię",
-    "surname": "Nazwisko",
-    "nick": "Nazwa użytkownika"
+    "profile": "Profil",
+    "register": "Zarejestruj się",
+    "trainingHistory": "Historia treningów",
+    "trainings": "Treningi"
   },
   "profile": {
-    "title": "Profil",
+    "contactInfo": "Informacje kontaktowe",
     "personalInfo": "Informacje osobiste",
-    "contactInfo": "Informacje kontaktowe"
+    "title": "Profil"
+  },
+  "training": {
+    "description": "Każdy podniesiony ciężar to krok w kierunku silniejszej wersji siebie!",
+    "form": {
+      "breakTime": "Czas przerwy",
+      "cancelTraining": "Anuluj Trening",
+      "completeTraining": "Zakończ i Zapisz",
+      "endSet": "Zakończ serię",
+      "errors": {
+        "exerciseNameRequired": "Nazwa ćwiczenia jest wymagana",
+        "exerciseNameTooShort": "Nazwa ćwiczenia musi mieć co najmniej 2 znaki",
+        "invalidReps": "Liczba powtórzeń musi być większa od 0",
+        "invalidWeight": "Ciężar nie może być ujemny"
+      },
+      "exerciseName": "Nazwa Ćwiczenia",
+      "exerciseTime": "Czas Ćwiczeń",
+      "finishTraining": "Zakończ Trening",
+      "kg": "kg",
+      "minutes": "min",
+      "nextExercise": "Następne Ćwiczenie",
+      "nextSet": "Następna Seria",
+      "reps": "Powtórzenia",
+      "restTime": "Czas Odpoczynku",
+      "saveSet": "Zapisz Serię",
+      "seconds": "sek",
+      "set": "Seria",
+      "setsCompleted": "Ukończone Serie",
+      "start": "Start",
+      "startSet": "Rozpocznij serię",
+      "stop": "Stop",
+      "time": "Czas",
+      "title": "Sesja Treningowa",
+      "totalExercises": "Liczba Ćwiczeń",
+      "totalReps": "Liczba Powtórzeń",
+      "totalSets": "Liczba Serii",
+      "totalTime": "Całkowity Czas",
+      "totalWeight": "Całkowity Ciężar",
+      "trainingSummary": "Podsumowanie Treningu",
+      "weight": "Ciężar"
+    },
+    "letsGo": "Zaczynajmy!",
+    "rightNow": "Teraz",
+    "start": "Rozpocznij trening",
+    "startYourTraining": "Rozpocznij swój trening"
+  },
+  "user": {
+    "gymTraining": "Trening na siłowni"
   }
 }

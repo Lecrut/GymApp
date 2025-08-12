@@ -33,35 +33,35 @@ const guestItems = computed(() => [
 const userItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: 'user/',
+    value: '/user/',
     props: {
       prependIcon: 'mdi-home',
     },
   },
   {
     title: t('navigation.profile'),
-    value: 'user/profile',
+    value: '/user/profile',
     props: {
       prependIcon: 'mdi-account-circle',
     },
   },
   {
     title: t('navigation.trainings'),
-    value: 'user/gym-training',
+    value: '/user/gym-training',
     props: {
       prependIcon: 'mdi-dumbbell',
     },
   },
   {
     title: t('navigation.trainingHistory'),
-    value: 'user/training-history',
+    value: '/user/training-history',
     props: {
       prependIcon: 'mdi-history',
     },
   },
   {
     title: t('navigation.logout'),
-    value: 'logout',
+    value: '/logout',
     props: {
       prependIcon: 'mdi-logout',
     },
@@ -72,12 +72,12 @@ const drawer = ref(false)
 const isAuthenticated = ref(true)
 
 function handleItemClick(value: string) {
-  if (value === 'logout') {
+  if (value === '/logout') {
     isAuthenticated.value = false
     router.push('/')
   }
   else {
-    router.push(`/${value}`)
+    router.push(value)
   }
   drawer.value = false
 }

@@ -10,7 +10,7 @@ export default antfu({
   vue: {
     overrides: {
       'max-lines': ['error', 800],
-      'vue/max-len': ['error', 150],
+      'vue/max-len': ['error', 200],
       'vue/max-attributes-per-line': [
         'error',
         {
@@ -22,17 +22,6 @@ export default antfu({
           },
         },
       ],
-      // 'vue/attributes-order': [
-      //   'error',
-      //   {
-      //     alphabetical: true,
-      //   },
-      // ],
-      // 'vue/no-static-inline-styles': 'error',
-      // 'vue/no-v-model-argument': 'error',
-      // 'vue/no-root-v-if': 'error',
-      // 'vue/no-use-v-else-with-v-for': 'error',
-      // 'vue/v-on-handler-style': 'error',
       'vue/prefer-import-from-vue': 'error',
       'no-shadow': 'error',
       'vue/multiline-ternary': 'error',
@@ -99,7 +88,6 @@ export default antfu({
       'vue/require-name-property': 'error',
       'vue/require-typed-object-prop': 'error',
       'vue/require-typed-ref': 'error',
-      // 'vue/static-class-names-order': 'error',
       'vue/v-for-delimiter-style': 'error',
       'vue/valid-define-options': 'error',
       'vue/array-bracket-newline': ['error', 'always'],
@@ -139,10 +127,6 @@ export default antfu({
   },
   typescript: {
     overrides: {
-      // 'array-element-newline': ['error', 'always'],
-      // 'no-magic-numbers': 'error',
-      // 'require-atomic-updates': 'error',
-      // 'id-length': 'error',
       'ts/unified-signatures': 0,
       'no-shadow': 'error',
       'consistent-return': 'error',

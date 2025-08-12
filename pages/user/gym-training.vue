@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import TrainingDialog from '@/components/dialogs/TrainingDialog.vue'
-// import auth from '~/middleware/auth'
+import auth from '~/middleware/auth'
 
-// definePageMeta({
-//     middleware: [auth]
-// })
+definePageMeta({
+  middleware: [auth],
+})
 
 const isShowDialog = ref(false)
 
@@ -15,8 +15,11 @@ function openTrainingDialog() {
 </script>
 
 <template>
-  <div>
-    <v-card class="py-5 bg-blue-lighten-1">
+  <div class="d-flex justify-center min-h-screen pa-4">
+    <v-card
+      class="py-5 bg-blue-lighten-1"
+      rounded="xl"
+    >
       <v-card-title align="center">
         <div class="text-h2">
           {{ $t('user.gymTraining') }}
