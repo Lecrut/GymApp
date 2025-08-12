@@ -5,6 +5,9 @@ import { useTrainingStore } from '~/stores/training'
 
 const trainingStore = useTrainingStore()
 
+const authStore = useAuthStore()
+const { userData } = storeToRefs(authStore)
+
 enum Phase {
   EXERCISE_INPUT = 'exercise_input',
   TIMER_RUNNING = 'timer_running',
@@ -164,7 +167,7 @@ watch(isShow, (newVal) => {
   if (newVal) {
     resetDialog()
     sessionStartTime.value = new Date()
-    trainingStore.startNewSession()
+    trainingStore.startNewSession(userData.value?.reference || null)
   }
   else {
     stopTimer()

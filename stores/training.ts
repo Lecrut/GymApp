@@ -1,3 +1,4 @@
+import type { DocumentReference } from 'firebase/firestore'
 import type { Exercise, TrainingSession } from '~/models/training'
 import { addDoc, collection, getFirestore } from 'firebase/firestore'
 import { defineStore } from 'pinia'
@@ -10,12 +11,13 @@ export const useTrainingStore = defineStore('training', () => {
   const sessions = ref<TrainingSession[]>([])
   const currentSession = ref<TrainingSession | null>(null)
 
-  function startNewSession() {
+  function startNewSession(userRef: DocumentReference | null) {
     currentSession.value = {
       id: Date.now().toString(),
       date: new Date(),
       exercises: [],
       totalDuration: 0,
+      userRef,
     }
   }
 
