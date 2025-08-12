@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, Timestamp, where } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
 import { useTrainingStore } from './training'
@@ -22,8 +22,14 @@ export const useAuthStore = defineStore('auth', () => {
       const userDocRef = doc(db, 'users', uid)
       const userDoc = await getDoc(userDocRef)
       if (userDoc.exists()) {
-        const data = userDoc.data() as IUser
-        userData.value = new UserModel(data, userDocRef)
+        const data = userDoc.data() as any
+        userData.value = new UserModel(
+          {
+            ...data,
+            dateOfBirth: data.dateOfBirth ? data.dateOfBirth.toDate() : new Date(),
+            created: data.created ? data.created.toDate() : new Date(),
+          },
+          userDocRef)
       }
       else {
         error.value = 'User data not found'
@@ -67,14 +73,6 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      // const signInMethods = await fetchSignInMethodsForEmail(auth, email)
-      // if (signInMethods.length === 0) {
-      //   error.value = 'No account associated with this email.'
-      //   loading.value = false
-      //   return true
-      // }
-
-      const { collection, query, where, getDocs } = await import('firebase/firestore')
       const usersQuery = query(collection(db, 'users'), where('email', '==', email))
       const querySnapshot = await getDocs(usersQuery)
 
@@ -171,6 +169,35 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const updateUserData = async (updatedUser: UserModel) => {
+    if (!userData.value?.reference) {
+      return
+    }
+
+    loading.value = true
+    error.value = null
+
+    try {
+      await setDoc(userData.value.reference, 
+        {
+          ...updatedUser,
+          dateOfBirth: new Timestamp(updatedUser.dateOfBirth.getTime() / 1000, 0)
+        }, 
+        { merge: true }
+      )
+      userData.value = new UserModel(updatedUser, userData.value.reference)
+      return
+    }
+    catch (err: any) {
+      error.value = err.message
+      console.error(err)
+      return
+    }
+    finally {
+      loading.value = false
+    }
+  }
+
   return {
     userData,
     error,
@@ -182,5 +209,6 @@ export const useAuthStore = defineStore('auth', () => {
     checkEmailAvailability,
     loginWithEmail,
     logout,
+    updateUserData,
   }
 })

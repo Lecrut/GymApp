@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail, mdiPencil } from '@mdi/js'
+import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail } from '@mdi/js'
 import { onMounted, ref } from 'vue'
+import EditProfileDialog from '~/components/dialogs/EditProfileDialog.vue'
 import auth from '~/middleware/auth'
 import { useAuthStore } from '../../stores/auth'
 
@@ -11,6 +12,12 @@ definePageMeta({
 const authStore = useAuthStore()
 const userData = ref<typeof authStore.userData | null>(null)
 const loading = ref(true)
+
+const isShowEditDialog = ref(false)
+
+function openEditDialog() {
+  isShowEditDialog.value = true
+}
 
 onMounted(() => {
   loading.value = true
@@ -188,10 +195,10 @@ onMounted(() => {
                   sm="6"
                 >
                   <v-btn
-                    variant="outlined"
+                    variant="elevated"
                     color="primary"
                     block
-                    :prepend-icon="mdiPencil"
+                    @click="openEditDialog"
                   >
                     {{ $t('auth.editProfile') }}
                   </v-btn>
@@ -202,5 +209,9 @@ onMounted(() => {
         </v-card>
       </v-col>
     </v-row>
+
+    <EditProfileDialog
+      v-model:is-show="isShowEditDialog"
+    />
   </v-container>
 </template>
