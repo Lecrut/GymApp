@@ -136,8 +136,8 @@ function finishTraining() {
   currentPhase.value = Phase.TRAINING_SUMMARY
 }
 
-function completeFinalTraining() {
-  trainingStore.finishSession()
+async function completeFinalTraining() {
+  await trainingStore.finishSession()
 
   resetDialog()
   isShow.value = false

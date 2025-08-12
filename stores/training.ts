@@ -1,6 +1,10 @@
 import type { Exercise, TrainingSession } from '~/models/training'
+import { addDoc, collection, getFirestore } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+
+const db = getFirestore()
+const trainingCollection = collection(db, 'trainings')
 
 export const useTrainingStore = defineStore('training', () => {
   const sessions = ref<TrainingSession[]>([])
@@ -25,41 +29,24 @@ export const useTrainingStore = defineStore('training', () => {
     currentSession.value.totalDuration += exerciseDuration
   }
 
-  function finishSession() {
+  async function finishSession() {
     if (!currentSession.value)
       return
 
-    sessions.value.push({ ...currentSession.value })
+    const sessionToSave = { ...currentSession.value }
+    sessions.value.push(sessionToSave)
     currentSession.value = null
 
-    saveToStorage()
-  }
-
-  function saveToStorage() {
-    localStorage.setItem('gym-training-sessions', JSON.stringify(sessions.value))
-  }
-
-  function loadFromStorage() {
-    const stored = localStorage.getItem('gym-training-sessions')
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      sessions.value = parsed.map((session: any) => ({
-        ...session,
-        date: new Date(session.date),
-        exercises: session.exercises.map((exercise: any) => ({
-          ...exercise,
-          sets: exercise.sets.map((set: any) => ({
-            ...set,
-            timestamp: new Date(set.timestamp),
-          })),
-        })),
-      }))
+    try {
+      await addDoc(trainingCollection, sessionToSave)
+    }
+    catch (error) {
+      console.error('Error saving training session to Firestore:', error)
     }
   }
 
   function deleteSession(sessionId: string) {
     sessions.value = sessions.value.filter(session => session.id !== sessionId)
-    saveToStorage()
   }
 
   function getSessionsByDate(date: Date) {
@@ -81,8 +68,6 @@ export const useTrainingStore = defineStore('training', () => {
     localStorage.removeItem('gym-training-sessions')
   }
 
-  loadFromStorage()
-
   return {
     sessions,
     currentSession,
@@ -94,7 +79,5 @@ export const useTrainingStore = defineStore('training', () => {
     getTotalWorkouts,
     getTotalExercises,
     resetStore,
-    saveToStorage,
-    loadFromStorage,
   }
 })
