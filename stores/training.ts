@@ -4,12 +4,12 @@ import { addDoc, collection, getFirestore } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-const db = getFirestore()
-const trainingCollection = collection(db, 'trainings')
-
 export const useTrainingStore = defineStore('training', () => {
   const sessions = ref<TrainingSession[]>([])
   const currentSession = ref<TrainingSession | null>(null)
+
+  const db = getFirestore()
+  const trainingCollection = collection(db, 'trainings')
 
   function startNewSession(userRef: DocumentReference | null) {
     currentSession.value = {
