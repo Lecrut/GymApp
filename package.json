@@ -48,6 +48,7 @@
     "unocss": "^66.4.2",
     "vite-plugin-vuetify": "^2.1.1",
     "vue-tsc": "^3.0.1",
-    "vuetify": "^3.9.0"
+    "vuetify": "^3.9.0",
+    "pre-commit": "^1.2.2"
   }
 }
