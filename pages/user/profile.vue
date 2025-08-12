@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail, mdiLogout, mdiPencil } from '@mdi/js'
+import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail, mdiPencil } from '@mdi/js'
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import auth from '~/middleware/auth'
 import { useAuthStore } from '../../stores/auth'
 
@@ -9,18 +8,9 @@ definePageMeta({
   middleware: [auth],
 })
 
-const router = useRouter()
 const authStore = useAuthStore()
 const userData = ref<typeof authStore.userData | null>(null)
 const loading = ref(true)
-
-async function handleLogout() {
-  await authStore.logout()
-  if (authStore.error)
-    console.error('Logout error:', authStore.error)
-  else
-    router.push('/')
-}
 
 onMounted(() => {
   loading.value = true
@@ -188,9 +178,11 @@ onMounted(() => {
 
             <v-divider />
 
-            <!-- Actions -->
             <v-card-actions class="pa-6">
-              <v-row>
+              <v-row
+                justify="center"
+                align="center"
+              >
                 <v-col
                   cols="12"
                   sm="6"
@@ -202,21 +194,6 @@ onMounted(() => {
                     :prepend-icon="mdiPencil"
                   >
                     {{ $t('auth.editProfile') }}
-                  </v-btn>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-btn
-                    variant="flat"
-                    color="error"
-                    block
-                    :prepend-icon="mdiLogout"
-                    @click="handleLogout"
-                  >
-                    {{ $t('auth.logout') }}
                   </v-btn>
                 </v-col>
               </v-row>
