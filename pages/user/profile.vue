@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail } from '@mdi/js'
+import { mdiAccount, mdiAccountOutline, mdiAt, mdiCalendar, mdiEmail } from '@mdi/js'
 import { onMounted, ref } from 'vue'
 import EditProfileDialog from '~/components/dialogs/EditProfileDialog.vue'
+import { calculateAge } from '~/composables/time'
 import auth from '~/middleware/auth'
 import { useAuthStore } from '../../stores/auth'
 
@@ -159,7 +160,10 @@ onMounted(() => {
                   </div>
                 </v-col>
 
-                <v-col cols="12">
+                <v-col
+                  cols="12"
+                  sm="6"
+                >
                   <div class="d-flex align-center">
                     <v-icon
                       color="primary"
@@ -175,6 +179,32 @@ onMounted(() => {
 
                       <p class="text-body-1 font-weight-medium">
                         {{ userData?.nick }}
+                      </p>
+                    </div>
+                  </div>
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  sm="6"
+                >
+                  <div class="d-flex align-center">
+                    <v-icon
+                      color="primary"
+                      class="me-3"
+                    >
+                      {{ mdiCalendar }}
+                    </v-icon>
+
+                    <div>
+                      <p class="text-caption text-medium-emphasis mb-1">
+                        {{ $t('profile.age') }}
+                      </p>
+
+                      <p class="text-body-1 font-weight-medium">
+                        {{ userData?.dateOfBirth
+                          ? calculateAge(userData.dateOfBirth)
+                          : 0 }} {{ $t('profile.years') }}
                       </p>
                     </div>
                   </div>

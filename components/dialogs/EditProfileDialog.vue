@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { requiredRule, emailRule, lengthRule, lengthRuleShort, timestampPastRule } from '~/composables/rules'
-import { UserModel } from '~/models/user'
+import { emailRule, lengthRule, lengthRuleShort, requiredRule, timestampPastRule } from '~/composables/rules'
 import { formatDateForInput } from '~/composables/time'
+import { UserModel } from '~/models/user'
 
 const isShow = defineModel<boolean>('isShow', {
   default: false,
@@ -17,22 +17,21 @@ const name = ref('')
 const surname = ref('')
 const dateOfBirth = ref('')
 
-
-
 function prepareUserModel() {
-    if (!userData.value) return null
-    return new UserModel({
-      ...userData.value,
-      nick: nick.value,
-      name: name.value,
-      surname: surname.value,
-      dateOfBirth: new Date(dateOfBirth.value),
-    }, userData.value?.reference)
+  if (!userData.value)
+    return null
+
+  return new UserModel({
+    ...userData.value,
+    nick: nick.value,
+    name: name.value,
+    surname: surname.value,
+    dateOfBirth: new Date(dateOfBirth.value),
+  }, userData.value?.reference)
 }
 
 async function editUser() {
-    const newUser = prepareUserModel()
-    console.log('Editing user:', newUser)
+  const newUser = prepareUserModel()
   if (await isValid() && newUser) {
     await authStore.updateUserData(newUser)
     if (!error.value) {
@@ -42,13 +41,13 @@ async function editUser() {
 }
 
 function closeDialog() {
-    email.value = ''
-    nick.value = ''
-    name.value = ''
-    surname.value = ''
-    dateOfBirth.value = ''
+  email.value = ''
+  nick.value = ''
+  name.value = ''
+  surname.value = ''
+  dateOfBirth.value = ''
 
-    isShow.value = false
+  isShow.value = false
 }
 
 watch(isShow, (newValue) => {
@@ -60,7 +59,6 @@ watch(isShow, (newValue) => {
     dateOfBirth.value = formatDateForInput(userData.value?.dateOfBirth || new Date())
   }
 })
-
 </script>
 
 <template>
@@ -73,57 +71,81 @@ watch(isShow, (newValue) => {
       <v-card-title class="text-h5">
         {{ $t('auth.editProfile') }}
       </v-card-title>
-      
+
       <v-card-text>
-        <v-form ref="form" v-model="valid">
+        <v-form
+          ref="form"
+          v-model="valid"
+        >
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col
+              cols="12"
+              md="6"
+            >
               <v-text-field
                 v-model="name"
                 :label="$t('auth.name')"
-                :rules="[requiredRule(), lengthRule()]"
+                :rules="[
+                  requiredRule(),
+                  lengthRule(),
+                ]"
                 variant="outlined"
                 density="comfortable"
               />
             </v-col>
-            
-            <v-col cols="12" md="6">
+
+            <v-col
+              cols="12"
+              md="6"
+            >
               <v-text-field
                 v-model="surname"
                 :label="$t('auth.surname')"
-                :rules="[requiredRule(), surnameLengthRule()]"
+                :rules="[
+                  requiredRule(),
+                  surnameLengthRule(),
+                ]"
                 variant="outlined"
                 density="comfortable"
               />
             </v-col>
-            
+
             <v-col cols="12">
               <v-text-field
                 v-model="nick"
                 :label="$t('auth.nick')"
-                :rules="[requiredRule(), lengthRuleShort(), lengthRule()]"
+                :rules="[
+                  requiredRule(),
+                  lengthRuleShort(),
+                  lengthRule(),
+                ]"
                 variant="outlined"
                 density="comfortable"
               />
             </v-col>
-            
+
             <v-col cols="12">
               <v-text-field
                 v-model="email"
                 :label="$t('auth.email')"
-                :rules="[requiredRule(), emailRule()]"
+                :rules="[
+                  requiredRule(),
+                  emailRule(),
+                ]"
                 disabled
                 variant="outlined"
                 density="comfortable"
                 type="email"
               />
             </v-col>
-            
+
             <v-col cols="12">
               <v-text-field
                 v-model="dateOfBirth"
                 :label="$t('auth.register.dateBirth')"
-                :rules="[timestampPastRule()]"
+                :rules="[
+                  timestampPastRule(),
+                ]"
                 variant="outlined"
                 density="comfortable"
                 type="date"
@@ -132,9 +154,10 @@ watch(isShow, (newValue) => {
           </v-row>
         </v-form>
       </v-card-text>
-      
+
       <v-card-actions>
         <v-spacer />
+
         <v-btn
           color="grey"
           variant="text"
@@ -142,6 +165,7 @@ watch(isShow, (newValue) => {
         >
           {{ $t('common.cancel') }}
         </v-btn>
+
         <v-btn
           color="primary"
           variant="elevated"

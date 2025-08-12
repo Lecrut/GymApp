@@ -26,10 +26,15 @@ export const useAuthStore = defineStore('auth', () => {
         userData.value = new UserModel(
           {
             ...data,
-            dateOfBirth: data.dateOfBirth ? data.dateOfBirth.toDate() : new Date(),
-            created: data.created ? data.created.toDate() : new Date(),
+            dateOfBirth: data.dateOfBirth
+              ? data.dateOfBirth.toDate()
+              : new Date(),
+            created: data.created
+              ? data.created.toDate()
+              : new Date(),
           },
-          userDocRef)
+          userDocRef,
+        )
       }
       else {
         error.value = 'User data not found'
@@ -178,19 +183,16 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      await setDoc(userData.value.reference, 
-        {
-          ...updatedUser,
-          dateOfBirth: new Timestamp(updatedUser.dateOfBirth.getTime() / 1000, 0)
-        }, 
-        { merge: true }
-      )
+      await setDoc(userData.value.reference, {
+        ...updatedUser,
+        dateOfBirth: new Timestamp(updatedUser.dateOfBirth.getTime() / 1000, 0),
+      }, { merge: true })
       userData.value = new UserModel(updatedUser, userData.value.reference)
-      return
     }
     catch (err: any) {
       error.value = err.message
       console.error(err)
+
       return
     }
     finally {

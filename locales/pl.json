@@ -91,7 +91,9 @@
   "profile": {
     "contactInfo": "Informacje kontaktowe",
     "personalInfo": "Informacje osobiste",
-    "title": "Profil"
+    "title": "Profil",
+    "age": "Wiek",
+    "years": "lat"
   },
   "training": {
     "description": "Każdy podniesiony ciężar to krok w kierunku silniejszej wersji siebie!",
