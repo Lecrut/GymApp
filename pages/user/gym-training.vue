@@ -78,8 +78,7 @@ function openTrainingDialog() {
     </v-card>
 
     <TrainingDialog
-      v-if="isShowDialog"
-      v-model="isShowDialog"
+      v-model:is-show="isShowDialog"
     />
   </div>
 </template>
