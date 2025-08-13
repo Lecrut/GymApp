@@ -40,6 +40,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/i18n',
     '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error - Vuetify plugin type definitions are incompatible with Vite's plugin array
@@ -69,6 +70,9 @@ export default defineNuxtConfig({
         target: 'esnext',
       },
     },
+    storage: {
+      data: { driver: 'fs', base: './data' },
+    },
   },
   typescript: {
     typeCheck: false, // Disable during dev, enable in CI
@@ -77,4 +81,8 @@ export default defineNuxtConfig({
     payloadExtraction: false,
     renderJsonPayloads: false,
   },
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
+  ssr: true,
 })

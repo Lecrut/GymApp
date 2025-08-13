@@ -213,4 +213,6 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     updateUserData,
   }
+}, {
+  persist: true,
 })
