@@ -1,0 +1,6 @@
+README.md
+docs/
+*.test.ts
+*.spec.ts
+cypress/
+.github/

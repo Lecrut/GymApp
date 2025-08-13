@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail, mdiLogout, mdiPencil } from '@mdi/js'
+import { mdiAccount, mdiAccountOutline, mdiAt, mdiCalendar, mdiEmail } from '@mdi/js'
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import EditProfileDialog from '~/components/dialogs/EditProfileDialog.vue'
+import { calculateAge } from '~/composables/time'
 import auth from '~/middleware/auth'
 import { useAuthStore } from '../../stores/auth'
 
@@ -9,54 +10,15 @@ definePageMeta({
   middleware: [auth],
 })
 
-const { t } = useI18n()
-const router = useRouter()
 const authStore = useAuthStore()
-const userData = ref<typeof authStore.userData | null>(null)
+const { userData } = storeToRefs(authStore)
+
 const loading = ref(true)
 
-const userItems = computed(() => [
-  {
-    title: t('navigation.trainings'),
-    value: 'trainings',
-    props: {
-      prependIcon: 'mdi-dumbbell',
-      image: '/images/training-time.svg'
-    },
-  },
-  {
-    title: t('navigation.trainingHistory'),
-    value: 'training-history',
-    props: {
-      prependIcon: 'mdi-history',
-      image: '/images/training-history.svg'
-    },
-  },
-  {
-    title: t('navigation.statistics'),
-    value: 'statistics',
-    props: {
-      prependIcon: 'mdi-chart-scatter-plot',
-      image: '/images/user-statistics.svg'
-    },
-  },
-  {
-    title: t('navigation.profile'),
-    value: 'profile',
-    props: {
-      prependIcon: 'mdi-account-circle',
-      image: '/images/user-profile.svg'
-    },
-  },
-])
+const isShowEditDialog = ref(false)
 
-
-async function handleLogout() {
-  await authStore.logout()
-  if (authStore.error)
-    console.error('Logout error:', authStore.error)
-  else
-    router.push('/')
+function openEditDialog() {
+  isShowEditDialog.value = true
 }
 
 onMounted(() => {
@@ -102,7 +64,6 @@ onMounted(() => {
           </template>
 
           <template v-else>
-            <!-- Profile Header -->
             <v-card-text class="text-center pa-6">
               <v-avatar
                 size="120"
@@ -128,7 +89,6 @@ onMounted(() => {
 
             <v-divider />
 
-            <!-- Profile Information -->
             <v-card-text class="pa-6">
               <v-row>
                 <v-col cols="12">
@@ -200,7 +160,10 @@ onMounted(() => {
                   </div>
                 </v-col>
 
-                <v-col cols="12">
+                <v-col
+                  cols="12"
+                  sm="6"
+                >
                   <div class="d-flex align-center">
                     <v-icon
                       color="primary"
@@ -220,40 +183,53 @@ onMounted(() => {
                     </div>
                   </div>
                 </v-col>
+
+                <v-col
+                  cols="12"
+                  sm="6"
+                >
+                  <div class="d-flex align-center">
+                    <v-icon
+                      color="primary"
+                      class="me-3"
+                    >
+                      {{ mdiCalendar }}
+                    </v-icon>
+
+                    <div>
+                      <p class="text-caption text-medium-emphasis mb-1">
+                        {{ $t('profile.age') }}
+                      </p>
+
+                      <p class="text-body-1 font-weight-medium">
+                        {{ userData?.dateOfBirth
+                          ? calculateAge(userData.dateOfBirth)
+                          : 0 }} {{ $t('profile.years') }}
+                      </p>
+                    </div>
+                  </div>
+                </v-col>
               </v-row>
             </v-card-text>
 
             <v-divider />
 
-            <!-- Actions -->
             <v-card-actions class="pa-6">
-              <v-row>
+              <v-row
+                justify="center"
+                align="center"
+              >
                 <v-col
                   cols="12"
                   sm="6"
                 >
                   <v-btn
-                    variant="outlined"
+                    variant="elevated"
                     color="primary"
                     block
-                    :prepend-icon="mdiPencil"
+                    @click="openEditDialog"
                   >
                     {{ $t('auth.editProfile') }}
-                  </v-btn>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-btn
-                    variant="flat"
-                    color="error"
-                    block
-                    :prepend-icon="mdiLogout"
-                    @click="handleLogout"
-                  >
-                    {{ $t('auth.logout') }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -262,5 +238,9 @@ onMounted(() => {
         </v-card>
       </v-col>
     </v-row>
+
+    <EditProfileDialog
+      v-model:is-show="isShowEditDialog"
+    />
   </v-container>
 </template>

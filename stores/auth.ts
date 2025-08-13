@@ -1,8 +1,8 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/auth'
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, Timestamp, where } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
-import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword } from 'firebase/auth'
+import { useTrainingStore } from './training'
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = getAuth()
@@ -23,8 +23,19 @@ export const useAuthStore = defineStore('auth', () => {
       const userDocRef = doc(db, 'users', uid)
       const userDoc = await getDoc(userDocRef)
       if (userDoc.exists()) {
-        const data = userDoc.data() as IUser
-        userData.value = new UserModel(data, userDocRef)
+        const data = userDoc.data() as any
+        userData.value = new UserModel(
+          {
+            ...data,
+            dateOfBirth: data.dateOfBirth
+              ? data.dateOfBirth.toDate()
+              : new Date(),
+            created: data.created
+              ? data.created.toDate()
+              : new Date(),
+          },
+          userDocRef,
+        )
       }
       else {
         error.value = 'User data not found'
@@ -32,7 +43,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
     catch (err: any) {
       error.value = err.message
-      console.log(err)
     }
   }
 
@@ -40,28 +50,27 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup(auth, provider)
-      const user = result.user
+      const userTemp = result.user
 
-      const userRef = doc(db, 'users', user.uid)
+      const userRef = doc(db, 'users', userTemp.uid)
       const userSnap = await getDoc(userRef)
 
       if (!userSnap.exists()) {
         await setDoc(userRef, {
-          email: user.email || '',
-          nick: user.displayName || '',
-          name: user.displayName?.split(' ')[0] || 'N/A',
-          surname: user.displayName?.split(' ')[1] || 'N/A',
-          photo: user.photoURL || '',
+          email: userTemp.email || '',
+          nick: userTemp.displayName || '',
+          name: userTemp.displayName?.split(' ')[0] || 'N/A',
+          surname: userTemp.displayName?.split(' ')[1] || 'N/A',
+          photo: userTemp.photoURL || '',
           role: 'user',
           dateOfBirth: new Date(),
           created: new Date(),
         })
       }
       await fetchUserData(userRef.id)
-      console.log('Zalogowano jako:', user.displayName)
     }
-    catch (error) {
-      console.error('Błąd logowania:', error)
+    catch (e: unknown) {
+      console.error('Błąd logowania:', e)
     }
   }
 
@@ -70,31 +79,27 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      // const signInMethods = await fetchSignInMethodsForEmail(auth, email)
-      // if (signInMethods.length === 0) {
-      //   error.value = 'No account associated with this email.'
-      //   loading.value = false
-      //   return true
-      // }
-
-      const { collection, query, where, getDocs } = await import('firebase/firestore')
       const usersQuery = query(collection(db, 'users'), where('email', '==', email))
       const querySnapshot = await getDocs(usersQuery)
-      
+
       if (!querySnapshot.empty) {
         error.value = 'Email is already in use.'
         loading.value = false
+
         return false
       }
       error.value = 'No account associated with this email.'
       loading.value = false
-      return true
 
-    } catch (err: any) {
+      return true
+    }
+    catch (err: any) {
       error.value = err.message
-      console.log(err)
+      console.error(err)
+
       return false
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -105,21 +110,25 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, userDataInput.email, password)
-      const user = userCredential.user
+      const userTemp = userCredential.user
 
-      const userRef = doc(db, 'users', user.uid)
+      const userRef = doc(db, 'users', userTemp.uid)
       await setDoc(userRef, {
         ...userDataInput,
         created: new Date(),
       })
 
-      await fetchUserData(user.uid)
+      await fetchUserData(userTemp.uid)
+
       return true
-    } catch (err: any) {
+    }
+    catch (err: any) {
       error.value = err.message
-      console.log(err)
+      console.error(err)
+
       return false
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -132,12 +141,16 @@ export const useAuthStore = defineStore('auth', () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       user.value = userCredential.user
       await fetchUserData(userCredential.user.uid)
+
       return true
-    } catch (err: any) {
+    }
+    catch (err: any) {
       error.value = err.message
-      console.log(err)
+      console.error(err)
+
       return false
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -149,10 +162,39 @@ export const useAuthStore = defineStore('auth', () => {
       await signOut(auth)
       user.value = null
       userData.value = null
+
+      const trainingStore = useTrainingStore()
+      trainingStore.resetStore()
     }
     catch (err: any) {
       error.value = err.message
-      console.log(error.value)
+      console.error(error.value)
+    }
+    finally {
+      loading.value = false
+    }
+  }
+
+  const updateUserData = async (updatedUser: UserModel) => {
+    if (!userData.value?.reference) {
+      return
+    }
+
+    loading.value = true
+    error.value = null
+
+    try {
+      await setDoc(userData.value.reference, {
+        ...updatedUser,
+        dateOfBirth: new Timestamp(updatedUser.dateOfBirth.getTime() / 1000, 0),
+      }, { merge: true })
+      userData.value = new UserModel(updatedUser, userData.value.reference)
+    }
+    catch (err: any) {
+      error.value = err.message
+      console.error(err)
+
+      return
     }
     finally {
       loading.value = false
@@ -171,5 +213,6 @@ export const useAuthStore = defineStore('auth', () => {
     checkEmailAvailability,
     loginWithEmail,
     logout,
+    updateUserData,
   }
 })
