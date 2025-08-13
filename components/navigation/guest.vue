@@ -1,7 +1,12 @@
 <template>
-   <v-app-bar>
+  <v-app-bar>
     <v-app-bar-title>
-      <v-btn to="/" variant="text" prepend-icon="mdi-dumbbell" size="large">
+      <v-btn
+        to="/"
+        variant="text"
+        prepend-icon="mdi-dumbbell"
+        size="large"
+      >
         GymApp
       </v-btn>
     </v-app-bar-title>

@@ -21,7 +21,7 @@ const userItems = computed(() => [
     value: 'trainings',
     props: {
       prependIcon: 'mdi-dumbbell',
-      image: '/images/training-time.svg'
+      image: '/images/training-time.svg',
     },
   },
   {
@@ -29,7 +29,7 @@ const userItems = computed(() => [
     value: 'training-history',
     props: {
       prependIcon: 'mdi-history',
-      image: '/images/training-history.svg'
+      image: '/images/training-history.svg',
     },
   },
   {
@@ -37,7 +37,7 @@ const userItems = computed(() => [
     value: 'statistics',
     props: {
       prependIcon: 'mdi-chart-scatter-plot',
-      image: '/images/user-statistics.svg'
+      image: '/images/user-statistics.svg',
     },
   },
   {
@@ -45,11 +45,10 @@ const userItems = computed(() => [
     value: 'profile',
     props: {
       prependIcon: 'mdi-account-circle',
-      image: '/images/user-profile.svg'
+      image: '/images/user-profile.svg',
     },
   },
 ])
-
 
 async function handleLogout() {
   await authStore.logout()

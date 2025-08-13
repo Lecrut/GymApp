@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-import { useRouter } from 'vue-router'
+const activeItem = ref(null)
 
 const { t } = useI18n()
-const router = useRouter()
 
 const guestItems = computed(() => [
   {
@@ -64,13 +64,13 @@ const userItems = computed(() => [
       prependIcon: 'mdi-history',
     },
   },
-  {
-    title: t('navigation.logout'),
-    value: '/logout',
-    props: {
-      prependIcon: 'mdi-logout',
-    },
-  },
+  // {
+  //   title: t('navigation.logout'),
+  //   value: '/logout',
+  //   props: {
+  //     prependIcon: 'mdi-logout',
+  //   },
+  // },
 ])
 
 async function handleLogout() {
@@ -79,8 +79,6 @@ async function handleLogout() {
 }
 
 const drawer = ref(false)
-const isAuthenticated = ref(true)
-
 function handleItemClick(value: string) {
   if (value === '/logout') {
     isAuthenticated.value = false
@@ -95,13 +93,16 @@ function handleItemClick(value: string) {
 
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon
+      v-if="$vuetify.display.mdAndUp"
+      @click.stop="drawer = !drawer"
+    />
 
-    <!-- eslint-disable-next-line vue/no-bare-strings-in-template -->
     <v-app-bar-title>GymApp</v-app-bar-title>
   </v-app-bar>
 
   <v-navigation-drawer
+    v-if="$vuetify.display.mdAndUp"
     v-model="drawer"
     temporary
   >
@@ -117,4 +118,23 @@ function handleItemClick(value: string) {
       />
     </v-list>
   </v-navigation-drawer>
+
+  <v-bottom-navigation
+    v-if="$vuetify.display.smAndDown"
+    v-model="activeItem"
+    color="primary"
+    grow
+  >
+    <v-btn
+      v-for="item in (isAuthenticated
+        ? userItems
+        : guestItems)"
+      :key="item.value"
+      :value="item.value"
+      @click="handleItemClick(item.value)"
+    >
+      <v-icon :icon="item.props.prependIcon" />
+      {{ item.title }}
+    </v-btn>
+  </v-bottom-navigation>
 </template>
