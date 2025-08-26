@@ -9,10 +9,46 @@ definePageMeta({
   middleware: [auth],
 })
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 const userData = ref<typeof authStore.userData | null>(null)
 const loading = ref(true)
+
+const userItems = computed(() => [
+  {
+    title: t('navigation.trainings'),
+    value: 'trainings',
+    props: {
+      prependIcon: 'mdi-dumbbell',
+      image: '/images/training-time.svg',
+    },
+  },
+  {
+    title: t('navigation.trainingHistory'),
+    value: 'training-history',
+    props: {
+      prependIcon: 'mdi-history',
+      image: '/images/training-history.svg',
+    },
+  },
+  {
+    title: t('navigation.statistics'),
+    value: 'statistics',
+    props: {
+      prependIcon: 'mdi-chart-scatter-plot',
+      image: '/images/user-statistics.svg',
+    },
+  },
+  {
+    title: t('navigation.profile'),
+    value: 'profile',
+    props: {
+      prependIcon: 'mdi-account-circle',
+      image: '/images/user-profile.svg',
+    },
+  },
+])
 
 async function handleLogout() {
   await authStore.logout()

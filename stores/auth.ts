@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user = ref()
   const userData = ref<UserModel | null>(null)
+  const isAuthenticated = computed(() => !!user.value)
 
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -205,6 +206,7 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     loading,
     user,
+    isAuthenticated,
     loginWithGoogle,
     fetchUserData,
     registerByPassword,

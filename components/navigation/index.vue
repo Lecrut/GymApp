@@ -2,28 +2,33 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
+const activeItem = ref(null)
 
 const { t } = useI18n()
-const router = useRouter()
 
 const guestItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: 'home',
+    value: '',
     props: {
       prependIcon: 'mdi-home',
     },
   },
   {
     title: t('navigation.login'),
-    value: 'login',
+    value: 'auth/login',
     props: {
       prependIcon: 'mdi-login',
     },
   },
   {
     title: t('navigation.register'),
-    value: 'register',
+    value: 'auth/register',
     props: {
       prependIcon: 'mdi-pen',
     },
@@ -59,18 +64,21 @@ const userItems = computed(() => [
       prependIcon: 'mdi-history',
     },
   },
-  {
-    title: t('navigation.logout'),
-    value: '/logout',
-    props: {
-      prependIcon: 'mdi-logout',
-    },
-  },
+  // {
+  //   title: t('navigation.logout'),
+  //   value: '/logout',
+  //   props: {
+  //     prependIcon: 'mdi-logout',
+  //   },
+  // },
 ])
 
-const drawer = ref(false)
-const isAuthenticated = ref(true)
+async function handleLogout() {
+  await authStore.logout()
+  router.push('/')
+}
 
+const drawer = ref(false)
 function handleItemClick(value: string) {
   if (value === '/logout') {
     isAuthenticated.value = false
@@ -85,13 +93,16 @@ function handleItemClick(value: string) {
 
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon
+      v-if="$vuetify.display.mdAndUp"
+      @click.stop="drawer = !drawer"
+    />
 
-    <!-- eslint-disable-next-line vue/no-bare-strings-in-template -->
     <v-app-bar-title>GymApp</v-app-bar-title>
   </v-app-bar>
 
   <v-navigation-drawer
+    v-if="$vuetify.display.mdAndUp"
     v-model="drawer"
     temporary
   >
@@ -107,4 +118,23 @@ function handleItemClick(value: string) {
       />
     </v-list>
   </v-navigation-drawer>
+
+  <v-bottom-navigation
+    v-if="$vuetify.display.smAndDown"
+    v-model="activeItem"
+    color="primary"
+    grow
+  >
+    <v-btn
+      v-for="item in (isAuthenticated
+        ? userItems
+        : guestItems)"
+      :key="item.value"
+      :value="item.value"
+      @click="handleItemClick(item.value)"
+    >
+      <v-icon :icon="item.props.prependIcon" />
+      {{ item.title }}
+    </v-btn>
+  </v-bottom-navigation>
 </template>
