@@ -4,7 +4,6 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
-  // Vite optimizations
   vite: {
     optimizeDeps: {
       include: ['vuetify', 'firebase/auth', 'firebase/firestore'],
@@ -25,7 +24,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  devtools: { enabled: false }, // Disable in production
+  devtools: { enabled: false },
   build: {
     transpile: ['vuetify'],
   },
@@ -66,6 +65,16 @@ export default defineNuxtConfig({
       firebaseAppId: process.env.FIREBASE_APP_ID,
     },
   },
+  experimental: {
+    payloadExtraction: false,
+    renderJsonPayloads: false,
+    viewTransition: false,
+  },
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
+  ssr: process.env.NODE_ENV !== 'development',
+
   nitro: {
     esbuild: {
       options: {
@@ -78,19 +87,16 @@ export default defineNuxtConfig({
     experimental: {
       wasm: false,
     },
+    devProxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
   },
   typescript: {
     typeCheck: false,
   },
-  experimental: {
-    payloadExtraction: false,
-    renderJsonPayloads: false,
-  },
-  pinia: {
-    storesDirs: ['./stores/**'],
-  },
-  ssr: true,
-
   app: {
     head: {
       meta: [
@@ -101,4 +107,9 @@ export default defineNuxtConfig({
 
   css: [
   ],
+  router: {
+    options: {
+      hashMode: false,
+    },
+  },
 })
