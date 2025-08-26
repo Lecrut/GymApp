@@ -44,7 +44,9 @@ export default defineNuxtConfig({
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error - Vuetify plugin type definitions are incompatible with Vite's plugin array
-        config.plugins.push(vuetify({ autoImport: true }))
+        config.plugins.push(vuetify({
+          autoImport: true,
+        }))
       })
     },
   ],
@@ -73,9 +75,12 @@ export default defineNuxtConfig({
     storage: {
       data: { driver: 'fs', base: './data' },
     },
+    experimental: {
+      wasm: false,
+    },
   },
   typescript: {
-    typeCheck: false, // Disable during dev, enable in CI
+    typeCheck: false,
   },
   experimental: {
     payloadExtraction: false,
@@ -85,4 +90,15 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
   ssr: true,
+
+  app: {
+    head: {
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      ],
+    },
+  },
+
+  css: [
+  ],
 })
