@@ -7,7 +7,7 @@
         prepend-icon="mdi-dumbbell"
         size="large"
       >
-        GymApp
+        {{ $t('app.title') }}
       </v-btn>
     </v-app-bar-title>
   </v-app-bar>

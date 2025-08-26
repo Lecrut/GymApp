@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth'
 const router = useRouter()
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-const activeItem = ref(null)
+const activeItem: Ref<any> = ref(null)
 
 const { t } = useI18n()
 
@@ -64,13 +64,13 @@ const userItems = computed(() => [
       prependIcon: 'mdi-history',
     },
   },
-  // {
-  //   title: t('navigation.logout'),
-  //   value: '/logout',
-  //   props: {
-  //     prependIcon: 'mdi-logout',
-  //   },
-  // },
+  {
+    title: t('navigation.logout'),
+    value: '/logout',
+    props: {
+      prependIcon: 'mdi-logout',
+    },
+  },
 ])
 
 async function handleLogout() {
@@ -81,8 +81,7 @@ async function handleLogout() {
 const drawer = ref(false)
 function handleItemClick(value: string) {
   if (value === '/logout') {
-    isAuthenticated.value = false
-    router.push('/')
+    handleLogout()
   }
   else {
     router.push(value)
@@ -98,7 +97,7 @@ function handleItemClick(value: string) {
       @click.stop="drawer = !drawer"
     />
 
-    <v-app-bar-title>GymApp</v-app-bar-title>
+    <v-app-bar-title>{{ $t('app.title') }}</v-app-bar-title>
   </v-app-bar>
 
   <v-navigation-drawer

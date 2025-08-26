@@ -1,4 +1,8 @@
 {
+  "app": {
+    "title": "GymApp",
+    "rights": "All rights reserved."
+  },
   "auth": {
     "confirmPassword": "Confirm Password",
     "editProfile": "Edit Profile",

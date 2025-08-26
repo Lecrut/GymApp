@@ -9,8 +9,7 @@
         align="center"
       >
         <v-col cols="auto">
-          <!-- eslint-disable-next-line vue/no-bare-strings-in-template -->
-          {{ new Date().getFullYear() }} <strong>GymApp</strong>. All rights reserved.
+          {{ new Date().getFullYear() }} <strong>{{ $t('app.title') }}</strong> {{ $t('app.rights') }}
         </v-col>
       </v-row>
     </v-container>
