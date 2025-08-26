@@ -12,6 +12,7 @@ const authStore = useAuthStore()
 
 const userEmail = ref('')
 const userPassword = ref('')
+const showPassword = ref(false)
 
 const error = ref<string | null>(null)
 
@@ -95,6 +96,7 @@ async function handleLoginByPassword() {
               v-model="userEmail"
               :label="$t('auth.register.email')"
               type="email"
+              autocomplete="email"
               required
               prepend-inner-icon="mdi-email"
               :rules="[
@@ -106,13 +108,20 @@ async function handleLoginByPassword() {
             <v-text-field
               v-model="userPassword"
               :label="$t('auth.register.password')"
-              type="password"
+              :type="showPassword
+                ? 'text'
+                : 'password'"
+              autocomplete="current-password"
               required
               prepend-inner-icon="mdi-lock"
+              :append-inner-icon="showPassword
+                ? 'mdi-eye-off'
+                : 'mdi-eye'"
               :rules="[
                 requiredRule(),
                 passwordRule(),
               ]"
+              @click:append-inner="showPassword = !showPassword"
             />
 
             <v-alert

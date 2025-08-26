@@ -19,6 +19,8 @@ const userConfirmPassword = ref('')
 const userName = ref('')
 const userSurname = ref('')
 const userNickname = ref('')
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
 const selectedDate = ref<string | null>(null)
 const dialog = ref(false)
@@ -202,6 +204,7 @@ async function handleRegistrationByPassword() {
                     v-model="userEmail"
                     :label="$t('auth.register.email')"
                     type="email"
+                    autocomplete="email"
                     required
                     prepend-inner-icon="mdi-email"
                     :rules="[
@@ -213,25 +216,39 @@ async function handleRegistrationByPassword() {
                   <v-text-field
                     v-model="userPassword"
                     :label="$t('auth.register.password')"
-                    type="password"
+                    :type="showPassword
+                      ? 'text'
+                      : 'password'"
+                    autocomplete="new-password"
                     required
                     prepend-inner-icon="mdi-lock"
+                    :append-inner-icon="showPassword
+                      ? 'mdi-eye-off'
+                      : 'mdi-eye'"
                     :rules="[
                       passwordRule(),
                       lengthRuleShort(),
                     ]"
+                    @click:append-inner="showPassword = !showPassword"
                   />
 
                   <v-text-field
                     v-model="userConfirmPassword"
                     :label="$t('auth.register.confirmPassword')"
-                    type="password"
+                    :type="showConfirmPassword
+                      ? 'text'
+                      : 'password'"
+                    autocomplete="new-password"
                     required
                     prepend-inner-icon="mdi-lock"
+                    :append-inner-icon="showConfirmPassword
+                      ? 'mdi-eye-off'
+                      : 'mdi-eye'"
                     :rules="[
                       passwordRule(),
                       lengthRuleShort(),
                     ]"
+                    @click:append-inner="showConfirmPassword = !showConfirmPassword"
                   />
 
                   <v-alert
@@ -271,6 +288,7 @@ async function handleRegistrationByPassword() {
                     v-model="userName"
                     :label="$t('auth.register.name')"
                     type="text"
+                    autocomplete="given-name"
                     required
                     prepend-inner-icon="mdi-account-outline"
                     :rules="[
@@ -284,6 +302,7 @@ async function handleRegistrationByPassword() {
                     v-model="userSurname"
                     :label="$t('auth.register.surname')"
                     type="text"
+                    autocomplete="family-name"
                     required
                     prepend-inner-icon="mdi-account-outline"
                     :rules="[
@@ -296,6 +315,7 @@ async function handleRegistrationByPassword() {
                   <v-text-field
                     :model-value="formatSelectedDate(selectedDate)"
                     :label="$t('auth.register.dateBirth')"
+                    autocomplete="bday"
                     required
                     prepend-inner-icon="mdi-calendar"
                     readonly
@@ -355,6 +375,7 @@ async function handleRegistrationByPassword() {
                     v-model="userNickname"
                     :label="$t('auth.register.nickname')"
                     type="text"
+                    autocomplete="nickname"
                     required
                     prepend-inner-icon="mdi-weight-lifter"
                     :rules="[
