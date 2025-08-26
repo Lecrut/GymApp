@@ -53,6 +53,9 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
     defaultLocale: 'pl',
     vueI18n: './i18n.config.ts',
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
   },
 
   runtimeConfig: {
