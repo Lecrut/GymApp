@@ -14,21 +14,21 @@ const { t } = useI18n()
 const guestItems = computed(() => [
   {
     title: t('navigation.home'),
-    value: '',
+    value: '/',
     props: {
       prependIcon: 'mdi-home',
     },
   },
   {
     title: t('navigation.login'),
-    value: 'auth/login',
+    value: '/auth/login',
     props: {
       prependIcon: 'mdi-login',
     },
   },
   {
     title: t('navigation.register'),
-    value: 'auth/register',
+    value: '/auth/register',
     props: {
       prependIcon: 'mdi-pen',
     },

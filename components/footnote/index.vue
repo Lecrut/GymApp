@@ -9,7 +9,7 @@
         align="center"
       >
         <v-col cols="auto">
-          {{ new Date().getFullYear() }} <strong>{{ $t('app.title') }}</strong> {{ $t('app.rights') }}
+          {{ new Date().getFullYear() }} - <strong>{{ $t('app.title') }}</strong>. {{ $t('app.rights') }}
         </v-col>
       </v-row>
     </v-container>
