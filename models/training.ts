@@ -1,4 +1,4 @@
-import type { DocumentReference } from 'firebase/firestore'
+import type { DocumentData, DocumentReference } from 'firebase/firestore'
 
 export interface TrainingSet {
   reps: number
@@ -49,4 +49,8 @@ export function toMapTraining(data?: Partial<TrainingSession>): TrainingSession 
     totalDuration: data?.totalDuration || 0,
     userRef: data?.userRef || null,
   }
+}
+
+export function mapToTrainingModel(data: DocumentData): TrainingModel {
+  return new TrainingModel(toMapTraining(data.docs()), data.reference)
 }

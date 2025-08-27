@@ -1,265 +1,79 @@
-<script lang="ts" setup>
-import { mdiAccount, mdiAccountOutline, mdiAt, mdiEmail, mdiLogout, mdiPencil } from '@mdi/js'
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { ref } from 'vue'
 import auth from '~/middleware/auth'
-import { useAuthStore } from '../../stores/auth'
 
 definePageMeta({
   middleware: [auth],
 })
 
-const { t } = useI18n()
-const router = useRouter()
-const authStore = useAuthStore()
-const userData = ref<typeof authStore.userData | null>(null)
-const loading = ref(true)
+const isShowDialog = ref(false)
 
-const userItems = computed(() => [
-  {
-    title: t('navigation.trainings'),
-    value: 'trainings',
-    props: {
-      prependIcon: 'mdi-dumbbell',
-      image: '/images/training-time.svg',
-    },
-  },
-  {
-    title: t('navigation.trainingHistory'),
-    value: 'training-history',
-    props: {
-      prependIcon: 'mdi-history',
-      image: '/images/training-history.svg',
-    },
-  },
-  {
-    title: t('navigation.statistics'),
-    value: 'statistics',
-    props: {
-      prependIcon: 'mdi-chart-scatter-plot',
-      image: '/images/user-statistics.svg',
-    },
-  },
-  {
-    title: t('navigation.profile'),
-    value: 'profile',
-    props: {
-      prependIcon: 'mdi-account-circle',
-      image: '/images/user-profile.svg',
-    },
-  },
-])
-
-async function handleLogout() {
-  await authStore.logout()
-  if (authStore.error)
-    console.error('Logout error:', authStore.error)
-  else
-    router.push('/')
+function openTrainingDialog() {
+  isShowDialog.value = true
 }
-
-onMounted(() => {
-  loading.value = true
-  userData.value = authStore.userData
-  loading.value = false
-})
 </script>
 
 <template>
-  <v-container class="pa-4">
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="10"
-        md="8"
-        lg="6"
-      >
-        <v-card
-          elevation="3"
-          class="mx-auto"
-        >
-          <template v-if="loading">
-            <!-- Loading skeleton -->
-            <v-card-text class="text-center pa-6">
-              <v-skeleton-loader
-                type="avatar"
-                class="mx-auto mb-4"
-              />
+  <div class="d-flex justify-center min-h-screen pa-4">
+    <v-card
+      class="py-5 bg-blue-lighten-1"
+      rounded="xl"
+    >
+      <v-card-title align="center">
+        <div class="text-h2">
+          {{ $t('user.gymTraining') }}
+        </div>
+      </v-card-title>
 
-              <v-skeleton-loader
-                type="text"
-                width="60%"
-                class="mx-auto mb-2"
-              />
+      <v-card-text>
+        <v-row>
+          <v-col
+            class="d-flex align-center justify-center"
+            cols="12"
+            md="6"
+          >
+            <div class="d-flex flex-column ga-3">
+              <div class="text-h3 font-weight-bold">
+                {{ $t("training.startYourTraining") }}
+              </div>
 
-              <v-skeleton-loader
-                type="text"
-                width="40%"
-                class="mx-auto"
-              />
-            </v-card-text>
-          </template>
+              <div class="text-h3 font-weight-bold text-primary">
+                {{ $t("training.rightNow") }}
+              </div>
 
-          <template v-else>
-            <!-- Profile Header -->
-            <v-card-text class="text-center pa-6">
-              <v-avatar
-                size="120"
-                color="primary"
-                class="mb-4"
-              >
-                <v-icon
-                  size="60"
-                  color="white"
-                >
-                  {{ mdiAccount }}
-                </v-icon>
-              </v-avatar>
-
-              <h2 class="text-h4 font-weight-medium mb-2">
-                {{ userData?.name }} {{ userData?.surname }}
-              </h2>
-
-              <p class="text-subtitle-1 text-medium-emphasis">
-                {{ userData?.nick }}
+              <p class="text-subtitle-1">
+                {{ $t("training.description") }}
               </p>
-            </v-card-text>
 
-            <v-divider />
+              <v-btn @click="openTrainingDialog">
+                {{ $t("training.letsGo") }}
+              </v-btn>
+            </div>
+          </v-col>
 
-            <!-- Profile Information -->
-            <v-card-text class="pa-6">
-              <v-row>
-                <v-col cols="12">
-                  <div class="d-flex align-center mb-4">
-                    <v-icon
-                      color="primary"
-                      class="me-3"
-                    >
-                      {{ mdiEmail }}
-                    </v-icon>
-
-                    <div>
-                      <p class="text-caption text-medium-emphasis mb-1">
-                        {{ $t('auth.email') }}
-                      </p>
-
-                      <p class="text-body-1 font-weight-medium">
-                        {{ userData?.email }}
-                      </p>
-                    </div>
-                  </div>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <div class="d-flex align-center mb-4">
-                    <v-icon
-                      color="primary"
-                      class="me-3"
-                    >
-                      {{ mdiAccount }}
-                    </v-icon>
-
-                    <div>
-                      <p class="text-caption text-medium-emphasis mb-1">
-                        {{ $t('auth.firstName') }}
-                      </p>
-
-                      <p class="text-body-1 font-weight-medium">
-                        {{ userData?.name }}
-                      </p>
-                    </div>
-                  </div>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <div class="d-flex align-center mb-4">
-                    <v-icon
-                      color="primary"
-                      class="me-3"
-                    >
-                      {{ mdiAccountOutline }}
-                    </v-icon>
-
-                    <div>
-                      <p class="text-caption text-medium-emphasis mb-1">
-                        {{ $t('auth.lastName') }}
-                      </p>
-
-                      <p class="text-body-1 font-weight-medium">
-                        {{ userData?.surname }}
-                      </p>
-                    </div>
-                  </div>
-                </v-col>
-
-                <v-col cols="12">
-                  <div class="d-flex align-center">
-                    <v-icon
-                      color="primary"
-                      class="me-3"
-                    >
-                      {{ mdiAt }}
-                    </v-icon>
-
-                    <div>
-                      <p class="text-caption text-medium-emphasis mb-1">
-                        {{ $t('auth.nickname') }}
-                      </p>
-
-                      <p class="text-body-1 font-weight-medium">
-                        {{ userData?.nick }}
-                      </p>
-                    </div>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-card-text>
-
-            <v-divider />
-
-            <!-- Actions -->
-            <v-card-actions class="pa-6">
-              <v-row>
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-btn
-                    variant="outlined"
-                    color="primary"
-                    block
-                    :prepend-icon="mdiPencil"
-                  >
-                    {{ $t('auth.editProfile') }}
-                  </v-btn>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-btn
-                    variant="flat"
-                    color="error"
-                    block
-                    :prepend-icon="mdiLogout"
-                    @click="handleLogout"
-                  >
-                    {{ $t('auth.logout') }}
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-card-actions>
-          </template>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+          <v-col
+            class="d-flex justify-center"
+            cols="12"
+            md="6"
+          >
+            <v-img
+              class="flex-grow-0"
+              height="400"
+              width="400"
+              src="public/images/fitness-stats.svg"
+            >
+              <template #placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                  />
+                </div>
+              </template>
+            </v-img>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>

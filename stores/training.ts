@@ -1,15 +1,44 @@
 import type { DocumentReference } from 'firebase/firestore'
-import type { Exercise, TrainingSession } from '~/models/training'
-import { addDoc, collection, getFirestore } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, limit, orderBy, query, startAfter, where } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { type Exercise, mapToTrainingModel, type TrainingSession } from '~/models/training'
 
 export const useTrainingStore = defineStore('training', () => {
   const sessions = ref<TrainingSession[]>([])
   const currentSession = ref<TrainingSession | null>(null)
+  const lastDoc = ref<DocumentReference | null>(null)
 
   const db = getFirestore()
   const trainingCollection = collection(db, 'trainings')
+
+  async function getTrainingsInBath(user: DocumentReference) {
+    const trainings: TrainingSession[] = []
+    const batchSize = 10
+
+    try {
+      let q = query(
+        trainingCollection,
+        where('userRef', '==', user),
+        orderBy('date', 'desc'),
+        limit(batchSize),
+      )
+
+      if (lastDoc) {
+        q = query(q, startAfter(lastDoc))
+      }
+
+      const snapshot = await getDocs(q)
+      const batch = snapshot.docs.map(mapToTrainingModel)
+
+      trainings.push(...batch)
+
+      lastDoc.value = snapshot.docs[snapshot.docs.length - 1].ref
+    }
+    catch (error) {
+      console.error('Error fetching trainings for batch:', error)
+    }
+  }
 
   function startNewSession(userRef: DocumentReference | null) {
     currentSession.value = {
@@ -20,7 +49,6 @@ export const useTrainingStore = defineStore('training', () => {
       userRef,
     }
   }
-
   function addExerciseToSession(exercise: Exercise) {
     if (!currentSession.value)
       return
@@ -80,6 +108,7 @@ export const useTrainingStore = defineStore('training', () => {
     getSessionsByDate,
     getTotalWorkouts,
     getTotalExercises,
+    getTrainingsInBath,
     resetStore,
   }
 })
