@@ -1,3 +1,5 @@
+import { useSnackbarStore } from '~/stores/snackbar'
+
 export interface IError {
   code: string
 }
@@ -80,7 +82,4 @@ if ((import.meta as any).hot) {
     useSharedStore,
     (import.meta as any).hot,
   ))
-}
-function useSnackbarStore() {
-  throw new Error('Function not implemented.')
 }

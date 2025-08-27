@@ -5,11 +5,15 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import formValidation from '~/composables/formValidation'
 import { emailRule, lengthRule, lengthRuleShort, passwordRule, requiredRule, timestampPastRule } from '~/composables/rules'
+import { useSharedStore } from '~/stores/shared'
 import { useAuthStore } from '../../stores/auth'
 
 const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const sharedStore = useSharedStore()
+const { error, loading } = storeToRefs(sharedStore)
 
 const { form, valid, isValid } = formValidation()
 
@@ -25,8 +29,6 @@ const showConfirmPassword = ref(false)
 const selectedDate = ref<string | null>(null)
 const dialog = ref(false)
 const currentStep = ref(1)
-
-const error = ref<string | null>(null)
 
 function formatSelectedDate(date: string | null): string {
   if (!date)
@@ -69,82 +71,49 @@ const steps = computed(() => [
 ])
 
 async function pushByGoogle() {
-  try {
-    await authStore.loginWithGoogle()
-    if (authStore.error) {
-      error.value = authStore.error
-    }
-    else {
-      router.push('/user')
-    }
-  }
-  catch (err: any) {
-    error.value = err.message
+  await authStore.loginWithGoogle()
+  if (!error.value) {
+    router.push('/user')
   }
 }
 
 async function checkEmail(userEmailVariable: string) {
-  try {
-    if (!checkPasswordsMatch()) {
-      error.value = 'Passwords do not match'
-
-      return
-    }
-    if (await isValid()) {
-      const isSuccess = await authStore.checkEmailAvailability(userEmailVariable)
-      if (isSuccess) {
-        currentStep.value++
-        error.value = null
-      }
-      else {
-        error.value = authStore.error || 'Email in use'
-      }
-    }
+  if (!checkPasswordsMatch()) {
+    return
   }
-  catch (err: any) {
-    error.value = err.message
+  if (await isValid()) {
+    const isSuccess = await authStore.checkEmailAvailability(userEmailVariable)
+    if (isSuccess) {
+      currentStep.value++
+    }
   }
 }
 
 async function checkNextStep() {
   if (await isValid()) {
     currentStep.value++
-    error.value = null
-  }
-  else {
-    error.value = 'Please fill in all required fields correctly.'
   }
 }
 
 async function handleRegistrationByPassword() {
-  try {
-    if (!checkPasswordsMatch()) {
-      error.value = 'Passwords do not match'
-
-      return
-    }
-    if (await isValid()) {
-      const newUser: IUser = {
-        email: userEmail.value,
-        name: userName.value,
-        surname: userSurname.value,
-        nick: userNickname.value,
-        dateOfBirth: new Date(selectedDate.value || ''),
-        photo: '',
-        role: 'user',
-        created: new Date(),
-      }
-      await authStore.registerByPassword(newUser, userPassword.value)
-      if (authStore.error) {
-        error.value = authStore.error
-      }
-      else {
-        router.push('/user')
-      }
-    }
+  if (!checkPasswordsMatch()) {
+    return
   }
-  catch (err: any) {
-    error.value = err.message
+  if (await isValid()) {
+    const newUser: IUser = {
+      email: userEmail.value,
+      name: userName.value,
+      surname: userSurname.value,
+      nick: userNickname.value,
+      dateOfBirth: new Date(selectedDate.value || ''),
+      photo: '',
+      role: 'user',
+      created: new Date(),
+    }
+    await authStore.registerByPassword(newUser, userPassword.value)
+    if (!error.value) {
+      router.push('/user')
+    }
   }
 }
 </script>
@@ -162,6 +131,8 @@ async function handleRegistrationByPassword() {
         md="6"
       >
         <v-card
+          :loading="loading"
+          :disabled="loading"
           color="secondary"
           class="pa-6 w-100 mx-auto"
           style="max-width: 700px; width: 100%;"

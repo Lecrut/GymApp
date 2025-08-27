@@ -2,6 +2,7 @@
 import { emailRule, lengthRule, lengthRuleShort, requiredRule, timestampPastRule } from '~/composables/rules'
 import { formatDateForInput } from '~/composables/time'
 import { UserModel } from '~/models/user'
+import { useSharedStore } from '~/stores/shared'
 
 const isShow = defineModel<boolean>('isShow', {
   default: false,
@@ -9,7 +10,10 @@ const isShow = defineModel<boolean>('isShow', {
 
 const { form, valid, isValid } = formValidation()
 const authStore = useAuthStore()
-const { userData, error } = storeToRefs(authStore)
+const { userData } = storeToRefs(authStore)
+
+const sharedStore = useSharedStore()
+const { error, loading } = storeToRefs(sharedStore)
 
 const email = ref('')
 const nick = ref('')
@@ -67,7 +71,10 @@ watch(isShow, (newValue) => {
     max-width="600"
     @update:model-value="closeDialog"
   >
-    <v-card>
+    <v-card
+      :loading="loading"
+      :disabled="loading"
+    >
       <v-card-title class="text-h5">
         {{ $t('auth.editProfile') }}
       </v-card-title>

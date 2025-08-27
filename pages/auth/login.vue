@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import formValidation from '~/composables/formValidation'
 import { emailRule, passwordRule, requiredRule } from '~/composables/rules'
+import { useSharedStore } from '~/stores/shared'
 import { useAuthStore } from '../../stores/auth'
 
 const { valid } = formValidation()
@@ -10,41 +11,24 @@ const { valid } = formValidation()
 const router = useRouter()
 const authStore = useAuthStore()
 
+const sharedStore = useSharedStore()
+const { error, loading } = storeToRefs(sharedStore)
+
 const userEmail = ref('')
 const userPassword = ref('')
 const showPassword = ref(false)
 
-const error = ref<string | null>(null)
-
 async function pushByGoogle() {
-  try {
-    await authStore.loginWithGoogle()
-    if (authStore.error) {
-      error.value = authStore.error
-      console.error(error.value)
-    }
-    else {
-      router.push('/user')
-    }
-  }
-  catch (err: any) {
-    error.value = err.message
+  await authStore.loginWithGoogle()
+  if (!error.value) {
+    router.push('/user')
   }
 }
 
 async function handleLoginByPassword() {
-  try {
-    await authStore.loginWithEmail(userEmail.value, userPassword.value)
-    if (authStore.error) {
-      error.value = authStore.error
-      console.error(error.value)
-    }
-    else {
-      router.push('/user')
-    }
-  }
-  catch (err: any) {
-    error.value = err.message
+  await authStore.loginWithEmail(userEmail.value, userPassword.value)
+  if (!error.value) {
+    router.push('/user')
   }
 }
 </script>
@@ -62,6 +46,8 @@ async function handleLoginByPassword() {
         md="6"
       >
         <v-card
+          :loading="loading"
+          :disabled="loading"
           color="secondary"
           class="pa-6 mx-auto"
           style="max-width: 700px; width: 100%;"

@@ -2,22 +2,21 @@ import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWith
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, Timestamp, where } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { type IUser, UserModel } from '~/models/user'
+import { useSharedStore } from './shared'
 import { useTrainingStore } from './training'
 
 export const useAuthStore = defineStore('auth', () => {
   const auth = getAuth()
   const db = getFirestore()
 
+  const sharedStore = useSharedStore()
+
   const user = ref()
   const userData = ref<UserModel | null>(null)
   const isAuthenticated = computed(() => !!user.value)
 
-  const loading = ref(false)
-  const error = ref<string | null>(null)
-
   const fetchUserData = async (uid: string) => {
-    loading.value = true
-    error.value = null
+    sharedStore.init()
 
     try {
       const userDocRef = doc(db, 'users', uid)
@@ -38,15 +37,17 @@ export const useAuthStore = defineStore('auth', () => {
         )
       }
       else {
-        error.value = 'User data not found'
+        sharedStore.failure({ code: 'User data not found' })
       }
     }
     catch (err: any) {
-      error.value = err.message
+      sharedStore.failureSnackbar(err)
     }
   }
 
   const loginWithGoogle = async () => {
+    sharedStore.init()
+
     try {
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup(auth, provider)
@@ -68,45 +69,42 @@ export const useAuthStore = defineStore('auth', () => {
         })
       }
       await fetchUserData(userRef.id)
+
+      sharedStore.successSnackbar()
     }
-    catch (e: unknown) {
-      console.error('Błąd logowania:', e)
+    catch (e: any) {
+      sharedStore.failureSnackbar(e)
     }
   }
 
   const checkEmailAvailability = async (email: string): Promise<boolean> => {
-    loading.value = true
-    error.value = null
+    sharedStore.init()
 
     try {
       const usersQuery = query(collection(db, 'users'), where('email', '==', email))
       const querySnapshot = await getDocs(usersQuery)
 
       if (!querySnapshot.empty) {
-        error.value = 'Email is already in use.'
-        loading.value = false
+        sharedStore.failure({ code: 'Email is already in use.' })
 
         return false
       }
-      error.value = 'No account associated with this email.'
-      loading.value = false
+      sharedStore.failure({ code: 'No account associated with this email.' })
 
       return true
     }
     catch (err: any) {
-      error.value = err.message
-      console.error(err)
+      sharedStore.failureSnackbar(err)
 
       return false
     }
     finally {
-      loading.value = false
+      sharedStore.success()
     }
   }
 
   const registerByPassword = async (userDataInput: IUser, password: string): Promise<boolean> => {
-    loading.value = true
-    error.value = null
+    sharedStore.init()
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, userDataInput.email, password)
@@ -123,19 +121,18 @@ export const useAuthStore = defineStore('auth', () => {
       return true
     }
     catch (err: any) {
-      error.value = err.message
+      sharedStore.failureSnackbar(err)
       console.error(err)
 
       return false
     }
     finally {
-      loading.value = false
+      sharedStore.success()
     }
   }
 
   const loginWithEmail = async (email: string, password: string): Promise<boolean> => {
-    loading.value = true
-    error.value = null
+    sharedStore.init()
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -145,19 +142,19 @@ export const useAuthStore = defineStore('auth', () => {
       return true
     }
     catch (err: any) {
-      error.value = err.message
+      sharedStore.failureSnackbar(err)
       console.error(err)
 
       return false
     }
     finally {
-      loading.value = false
+      sharedStore.success()
     }
   }
 
   const logout = async () => {
-    loading.value = true
-    error.value = null
+    sharedStore.init()
+
     try {
       await signOut(auth)
       user.value = null
@@ -167,11 +164,11 @@ export const useAuthStore = defineStore('auth', () => {
       trainingStore.resetStore()
     }
     catch (err: any) {
-      error.value = err.message
-      console.error(error.value)
+      sharedStore.failure(err)
+      console.error(err.message)
     }
     finally {
-      loading.value = false
+      sharedStore.success()
     }
   }
 
@@ -180,8 +177,7 @@ export const useAuthStore = defineStore('auth', () => {
       return
     }
 
-    loading.value = true
-    error.value = null
+    sharedStore.init()
 
     try {
       await setDoc(userData.value.reference, {
@@ -191,20 +187,18 @@ export const useAuthStore = defineStore('auth', () => {
       userData.value = new UserModel(updatedUser, userData.value.reference)
     }
     catch (err: any) {
-      error.value = err.message
+      sharedStore.failure(err)
       console.error(err)
 
       return
     }
     finally {
-      loading.value = false
+      sharedStore.success()
     }
   }
 
   return {
     userData,
-    error,
-    loading,
     user,
     isAuthenticated,
     loginWithGoogle,
