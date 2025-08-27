@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "GymApp",
-    "rights": "Wszelkie prawa zastrzeżone."
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "title": "GymApp"
   },
   "auth": {
     "confirmPassword": "Potwierdź Hasło",
@@ -58,6 +58,10 @@
     },
     "surname": "Nazwisko"
   },
+  "common": {
+    "cancel": "Anuluj",
+    "save": "Zapisz"
+  },
   "landingPage": {
     "header1": "Trenuj jak pro",
     "header2": "z nami",
@@ -89,15 +93,15 @@
     "logout": "Wyloguj się",
     "profile": "Profil",
     "register": "Zarejestruj się",
-    "trainingHistory": "Historia treningów",
     "statistics": "Statystyki",
+    "trainingHistory": "Historia treningów",
     "trainings": "Treningi"
   },
   "profile": {
+    "age": "Wiek",
     "contactInfo": "Informacje kontaktowe",
     "personalInfo": "Informacje osobiste",
     "title": "Profil",
-    "age": "Wiek",
     "years": "lat"
   },
   "training": {
@@ -144,11 +148,13 @@
     "start": "Rozpocznij trening",
     "startYourTraining": "Rozpocznij swój trening"
   },
+  "universal": {
+    "copyClipboard": "Skopiowano",
+    "deleteCompletedInfo": "Usunięto",
+    "error": "Wystąpił błąd",
+    "saved": "Zapisano"
+  },
   "user": {
     "gymTraining": "Trening na siłowni"
-  },
-  "common": {
-    "cancel": "Anuluj",
-    "save": "Zapisz"
   }
 }
