@@ -13,7 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user = ref()
   const userData = ref<UserModel | null>(null)
-  const isAuthenticated = computed(() => !!user.value)
+  const isAuthenticated = computed(() => !!userData.value)
 
   const fetchUserData = async (uid: string) => {
     sharedStore.init()
